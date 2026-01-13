@@ -545,7 +545,7 @@ p code, li code {
   background: var(--bg2);
   padding: 0.2rem 0.5rem;
   border-radius: 3px;
-  color: var(--orange);
+  color: var(--green);
 
   @media (min-width: 768px) {
     padding: 0.15rem 0.4rem;

@@ -15,10 +15,12 @@ taxonomies = [
 ]
 
 [markdown]
-highlight_code = true
-highlight_theme = "base16-ocean-dark"
 external_links_target_blank = true
 external_links_no_referrer = true
+
+[markdown.highlighting]
+enabled = true
+theme = "everforest-dark"
 
 [extra]
 author = "Alec Lowry"
