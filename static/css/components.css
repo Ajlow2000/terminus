@@ -1,0 +1,282 @@
+/*
+ * Component Styles
+ *
+ * Blog listings, tags, experience/timeline, and "Things I Like" section.
+ * Reusable component patterns with mobile-first responsive design.
+ */
+
+/* Blog list - Mobile First */
+.blog-list {
+  list-style: none;
+}
+
+.blog-item {
+  margin-bottom: 2rem;
+  padding-bottom: 1.75rem;
+  border-bottom: 1px solid var(--bg2);
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  @media (min-width: 480px) {
+    margin-bottom: 2.25rem;
+    padding-bottom: 2rem;
+  }
+
+  @media (min-width: 768px) {
+    margin-bottom: 2.5rem;
+  }
+}
+
+.blog-item h2 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+.blog-item a {
+  color: var(--fg);
+  text-decoration: none;
+
+  &:hover {
+    color: var(--green);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--green);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+}
+
+.blog-meta {
+  color: var(--grey1);
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+
+  @media (min-width: 480px) {
+    font-size: 0.95rem;
+  }
+
+  @media (min-width: 768px) {
+    font-size: 0.9rem;
+  }
+}
+
+.blog-description {
+  color: var(--grey2);
+  margin-top: 0.5rem;
+}
+
+/* Tags - Mobile First with Touch Targets */
+.tags {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 0.75rem;
+
+  @media (min-width: 480px) {
+    gap: 0.625rem;
+  }
+
+  @media (min-width: 768px) {
+    gap: 0.5rem;
+  }
+}
+
+.tag {
+  background: var(--bg2);
+  color: var(--grey1);
+  padding: 0.5rem 0.85rem;
+  min-height: 44px;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  text-decoration: none;
+  border: 1px solid var(--bg3);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background: var(--bg3);
+    color: var(--green);
+    border-color: var(--green);
+    text-decoration: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--green);
+    outline-offset: 2px;
+  }
+
+  @media (min-width: 480px) {
+    font-size: 0.9rem;
+    padding: 0.45rem 0.75rem;
+  }
+
+  @media (min-width: 768px) {
+    font-size: 0.85rem;
+    padding: 0.4rem 0.7rem;
+    min-height: auto;
+  }
+}
+
+/* Tag filter (for blog listing page) */
+.tag-filter {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: var(--bg1);
+  border-radius: 4px;
+  border: 1px solid var(--bg3);
+}
+
+.tag-filter h3 {
+  margin-top: 0;
+  font-size: 1.05rem;
+
+  @media (min-width: 768px) {
+    font-size: 1rem;
+  }
+}
+
+/* Experience/Timeline styles - Mobile First */
+.experience-item {
+  margin-bottom: 2rem;
+  padding-bottom: 1.75rem;
+  border-bottom: 1px solid var(--bg2);
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  @media (min-width: 480px) {
+    margin-bottom: 2.25rem;
+    padding-bottom: 2rem;
+  }
+
+  @media (min-width: 768px) {
+    margin-bottom: 2.5rem;
+  }
+}
+
+.experience-header {
+  margin-bottom: 0.5rem;
+}
+
+.experience-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--fg);
+  margin: 0;
+
+  @media (min-width: 480px) {
+    font-size: 1.25rem;
+  }
+}
+
+.experience-company {
+  color: var(--green);
+  font-weight: 500;
+}
+
+.experience-date {
+  color: var(--grey1);
+  font-size: 0.95rem;
+
+  @media (min-width: 768px) {
+    font-size: 0.9rem;
+  }
+}
+
+.experience-description {
+  margin-top: 0.75rem;
+  color: var(--grey2);
+}
+
+/* Style markdown-rendered experience content */
+/* Reduce spacing between job title and company/date line */
+article h2 {
+  margin-bottom: 0.25rem;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--bg3);
+}
+
+/* Remove border from first job title */
+article h2:first-of-type {
+  border-top: none;
+  padding-top: 0;
+  margin-top: 0;
+}
+
+/* Target the experience page specifically using article or content wrapper */
+article h2 + p strong:first-of-type,
+.content h2 + p strong:first-of-type {
+  color: var(--green);
+  font-weight: 600;
+}
+
+/* Make date line (paragraph right after h2) muted grey */
+article h2 + p,
+.content h2 + p {
+  color: var(--grey1);
+  font-size: 0.95rem;
+  margin-top: 0;
+
+  @media (min-width: 768px) {
+    font-size: 0.9rem;
+  }
+}
+
+/* Things I Like section */
+.things-category {
+  margin-bottom: 2.5rem;
+
+  @media (min-width: 768px) {
+    margin-bottom: 3rem;
+  }
+}
+
+.things-category h2 {
+  color: var(--green);
+  border-bottom: 2px solid var(--bg3);
+  padding-bottom: 0.5rem;
+}
+
+.things-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.things-list li {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--bg2);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.thing-title {
+  font-weight: 600;
+  color: var(--fg);
+}
+
+.thing-author {
+  color: var(--grey1);
+  font-size: 1rem;
+
+  @media (min-width: 768px) {
+    font-size: 0.95rem;
+  }
+}
+
+.thing-note {
+  color: var(--grey2);
+  font-size: 0.95rem;
+  margin-top: 0.25rem;
+
+  @media (min-width: 768px) {
+    font-size: 0.9rem;
+  }
+}
