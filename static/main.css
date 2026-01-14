@@ -51,6 +51,8 @@
   --grey2: var(--lackluster-gray6);
 
   --shadow: rgba(0, 0, 0, 0.1);
+  --inline-code-bg: var(--lackluster-gray9);
+  --inline-code-color: var(--fg);
 }
 
 [data-theme="dark"] {
@@ -75,6 +77,8 @@
   --grey2: var(--lackluster-gray6);
 
   --shadow: rgba(0, 0, 0, 0.3);
+  --inline-code-bg: var(--bg2);
+  --inline-code-color: var(--fg);
 }
 
 /* Reset and base styles - Mobile First */
@@ -542,10 +546,10 @@ code {
 }
 
 p code, li code {
-  background: var(--bg2);
+  background: var(--inline-code-bg);
   padding: 0.2rem 0.5rem;
   border-radius: 3px;
-  color: var(--green);
+  color: var(--inline-code-color);
 
   @media (min-width: 768px) {
     padding: 0.15rem 0.4rem;
