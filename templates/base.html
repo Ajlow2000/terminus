@@ -18,24 +18,24 @@
 </head>
 <body>
   <a href="#main-content" class="skip-to-content">Skip to content</a>
-  <div class="container">
-    <header>
-      <nav aria-label="Main navigation">
-        <a href="{{ get_url(path="/") }}" class="site-title">{{ config.title }}</a>
-        <ul class="nav-links">
-          <!-- <li><a href="{{ get_url(path="/blog") }}" {% if current_path is defined and current_path is starting_with("/blog") %}class="active" aria-current="page"{% endif %}>Blog</a></li> -->
-          <li><a href="{{ get_url(path="/experience") }}" {% if current_path is defined and current_path == "/experience" %}class="active" aria-current="page"{% endif %}>Experience</a></li>
-          <!-- <li><a href="{{ get_url(path="/things-i-like") }}" {% if current_path is defined and current_path == "/things-i-like" %}class="active" aria-current="page"{% endif %}>Things I Like</a></li> -->
-          <li>
-            <label class="theme-switch" aria-label="Toggle dark mode">
-              <input type="checkbox" id="theme-toggle" aria-label="Dark mode toggle">
-              <span class="slider" aria-hidden="true"></span>
-            </label>
-          </li>
-        </ul>
-      </nav>
-    </header>
+  <header>
+    <nav aria-label="Main navigation">
+      <a href="{{ get_url(path="/") }}" class="site-title">{{ config.title }}</a>
+      <ul class="nav-links">
+        <!-- <li><a href="{{ get_url(path="/blog") }}" {% if current_path is defined and current_path is starting_with("/blog") %}class="active" aria-current="page"{% endif %}>Blog</a></li> -->
+        <li><a href="{{ get_url(path="/experience") }}" {% if current_path is defined and current_path == "/experience" %}class="active" aria-current="page"{% endif %}>Experience</a></li>
+        <!-- <li><a href="{{ get_url(path="/things-i-like") }}" {% if current_path is defined and current_path == "/things-i-like" %}class="active" aria-current="page"{% endif %}>Things I Like</a></li> -->
+        <li>
+          <label class="theme-switch" aria-label="Toggle dark mode">
+            <input type="checkbox" id="theme-toggle" aria-label="Dark mode toggle">
+            <span class="slider" aria-hidden="true"></span>
+          </label>
+        </li>
+      </ul>
+    </nav>
+  </header>
 
+  <div class="container">
     <main id="main-content">
       {% block content %}{% endblock %}
     </main>
