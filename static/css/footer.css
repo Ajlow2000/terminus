@@ -1,0 +1,23 @@
+/*
+ * Footer Styles
+ *
+ * Site footer with responsive spacing.
+ */
+
+/* Footer */
+footer {
+  margin-top: 3rem;
+  border-top: 1px solid var(--bg3);
+  text-align: center;
+  color: var(--grey1);
+  font-size: 0.95rem;
+
+  @media (min-width: 480px) {
+    margin-top: 3.5rem;
+  }
+
+  @media (min-width: 768px) {
+    margin-top: 4rem;
+    font-size: 0.9rem;
+  }
+}
