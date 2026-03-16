@@ -77,9 +77,12 @@ const formatted = date.toLocaleDateString("en-US", {
   }
 
   article :global(img.typst-frame) {
-    vertical-align: middle;
     display: block;
-    margin: 1.5rem 0;
+    margin: 1.5rem auto;
+  }
+
+  article :global(span:has(> img.typst-frame)) {
+    display: block !important;
   }
 
   article :global(table) {

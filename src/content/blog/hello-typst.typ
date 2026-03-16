@@ -66,7 +66,7 @@ of the year.
     )
     let bar-w = 0.55
     let spacing = 1.0
-    let color-bar  = rgb("#5577aa")
+    let color-bar  = rgb("#f587aa")
     let color-axis = rgb("#888888")
     let color-text = rgb("#d4d0c8")
 
