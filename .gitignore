@@ -1,6 +1,12 @@
 # Zola build output
 public/
 
+# Astro
+dist/
+.astro/
+node_modules/
+bun.lock
+
 # Nix
 result
 result-*

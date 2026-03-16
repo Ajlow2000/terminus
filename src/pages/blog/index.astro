@@ -1,0 +1,61 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+
+const posts = (await getCollection("blog")).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+---
+
+<Layout title="blog — terminus">
+  <h1>blog</h1>
+  <ul>
+    {
+      posts.map((post) => (
+        <li>
+          <a href={`/blog/${post.id.replace(/\.[^.]+$/, "")}`}>{post.data.title}</a>
+          <time>{post.data.date.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })}</time>
+        </li>
+      ))
+    }
+  </ul>
+</Layout>
+
+<style>
+  h1 {
+    color: #ffffff;
+    margin: 0 0 2rem;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  li {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #1e1e1e;
+    gap: 1rem;
+  }
+
+  li a {
+    color: #d4d0c8;
+    text-decoration: none;
+  }
+
+  li a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+  }
+
+  time {
+    font-family: monospace;
+    font-size: 0.8rem;
+    color: #666;
+    white-space: nowrap;
+  }
+</style>
