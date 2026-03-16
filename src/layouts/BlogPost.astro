@@ -76,13 +76,37 @@ const formatted = date.toLocaleDateString("en-US", {
     overflow-x: auto;
   }
 
-  article :global(img.typst-frame) {
-    display: block;
-    margin: 1.5rem auto;
+  article :global(.sr-only) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
 
-  article :global(span:has(> img.typst-frame)) {
-    display: block !important;
+  article :global(figure.typst-figure) {
+    margin: 1.5rem 0;
+    text-align: center;
+  }
+
+  article :global(figure.typst-figure figcaption) {
+    font-size: 0.85rem;
+    color: #888;
+    margin-top: 0.5rem;
+  }
+
+  article :global(span.typst-math) {
+    display: block;
+    text-align: center;
+    margin: 1.5rem 0;
+  }
+
+  article :global(figure.typst-figure table) {
+    margin: 0;
   }
 
   article :global(table) {

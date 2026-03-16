@@ -5,9 +5,14 @@
 ))<frontmatter>
 
 #import "@preview/cetz:0.3.2": canvas, draw
+#import "../../lib/a11y.typ": frame, captioned
 
 #set text(fill: rgb("#d4d0c8"))
-#show math.equation: eq => box(html.frame(eq))
+#show math.equation: eq => html.elem(
+  "span",
+  attrs: (class: "typst-math"),
+  box(html.frame(eq)) + html.elem("span", attrs: (class: "sr-only"), repr(eq)),
+)
 
 = Hello from Typst
 
@@ -56,7 +61,8 @@ The chart below shows fictional monthly visitor counts. Each bar represents
 one month of traffic, illustrating how readership grew through the first half
 of the year.
 
-#html.frame(
+#frame(
+  alt: "Bar chart: monthly visitors growing from 2.3k in Jan to 5.1k in Jun",
   canvas(length: 0.75cm, {
     import draw: *
 
@@ -111,18 +117,21 @@ asperiores repellat.
 The table below shows rough GitHub star counts and YoY growth for a selection
 of programming languages as of early 2026.
 
-#table(
-  columns: (1fr, 1fr, 1fr),
-  align: (left, right, right),
-  table.header(
-    [*Language*], [*Stars (M)*], [*YoY Growth*],
-  ),
-  [Rust],    [95.4],  [+18%],
-  [Go],      [121.3], [+11%],
-  [Zig],     [14.7],  [+43%],
-  [Python],  [217.6], [+9%],
-  [TypeScript], [101.2], [+14%],
-  [Gleam],   [3.1],   [+67%],
+#captioned(
+  caption: "GitHub star counts and YoY growth for selected programming languages, early 2026.",
+  table(
+    columns: (1fr, 1fr, 1fr),
+    align: (left, right, right),
+    table.header(
+      [*Language*], [*Stars (M)*], [*YoY Growth*],
+    ),
+    [Rust],    [95.4],  [+18%],
+    [Go],      [121.3], [+11%],
+    [Zig],     [14.7],  [+43%],
+    [Python],  [217.6], [+9%],
+    [TypeScript], [101.2], [+14%],
+    [Gleam],   [3.1],   [+67%],
+  )
 )
 
 Qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et
