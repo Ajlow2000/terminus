@@ -1,5 +1,5 @@
 #metadata((
-  title: "Hello from Typst",
+  title: "Hello, Typst",
   date: "2026-03-16",
   description: "A test post written in Typst.",
 ))<frontmatter>
@@ -13,12 +13,26 @@
   attrs: (class: "typst-math"),
   box(html.frame(eq)) + html.elem("span", attrs: (class: "sr-only"), repr(eq)),
 )
+#show raw.where(block: true): it => html.elem(
+  "pre",
+  html.elem("code", attrs: (class: "language-" + it.lang), it.text),
+)
 
 = Hello from Typst
 
 This post is written in #link("https://typst.app")[Typst]. Typst is a modern
 typesetting system designed to be an alternative to LaTeX, with a cleaner
 syntax, faster compilation, and first-class support for mathematical notation.
+
+== A code block
+
+```js
+function greet(name) {
+  return `Hello, ${name}!`;
+}
+
+console.log(greet("world"));
+```
 
 == Why Typst?
 

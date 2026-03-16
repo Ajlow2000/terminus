@@ -76,6 +76,13 @@ const formatted = date.toLocaleDateString("en-US", {
     overflow-x: auto;
   }
 
+  article :global(pre code) {
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+    font-size: inherit;
+  }
+
   article :global(.sr-only) {
     position: absolute;
     width: 1px;
