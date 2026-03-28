@@ -10,12 +10,14 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor i
 
 ## A code block
 
-```js filename="example.js"
-function greet(name) {
-  return `Hello, ${name}!`;
+```rust filename="example.rs"
+fn greet(name: &str) -> String {
+    format!("Hello, {name}!")
 }
 
-console.log(greet("world"));
+fn main() {
+    println!("{}", greet("world"));
+}
 ```
 
 ## Why a blog?

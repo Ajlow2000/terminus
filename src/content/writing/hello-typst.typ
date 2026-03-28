@@ -26,12 +26,14 @@ syntax, faster compilation, and first-class support for mathematical notation.
 
 == A code block
 
-#with-filename("example.js")[```js
-function greet(name) {
-  return `Hello, ${name}!`;
+#with-filename("example.rs")[```rust
+fn greet(name: &str) -> String {
+    format!("Hello, {name}!")
 }
 
-console.log(greet("world"));
+fn main() {
+    println!("{}", greet("world"));
+}
 ```]
 
 == Why Typst?
