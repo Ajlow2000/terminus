@@ -5,7 +5,35 @@ import { SYNTAX_THEME } from "./src/config.ts";
 export default defineConfig({
   output: "static",
   markdown: {
-    shikiConfig: { theme: SYNTAX_THEME },
+    shikiConfig: {
+      theme: SYNTAX_THEME,
+      transformers: [
+        {
+          name: "code-filename",
+          root(root) {
+            const meta = this.options?.meta?.__raw ?? "";
+            const match = meta.match(/filename="([^"]+)"/);
+            if (!match) return;
+            root.children = [
+              {
+                type: "element",
+                tagName: "div",
+                properties: { class: "code-with-filename" },
+                children: [
+                  {
+                    type: "element",
+                    tagName: "div",
+                    properties: { class: "code-filename" },
+                    children: [{ type: "text", value: match[1] }],
+                  },
+                  ...root.children,
+                ],
+              },
+            ];
+          },
+        },
+      ],
+    },
   },
   integrations: [typst({ target: () => "html" })],
   vite: {

@@ -84,6 +84,25 @@ const formatted = date.toLocaleDateString("en-US", {
     font-size: inherit;
   }
 
+  article :global(.code-with-filename) {
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  article :global(.code-filename) {
+    background: #2d2d2d;
+    color: #999;
+    font-family: var(--font-mono);
+    font-size: 0.75em;
+    padding: 0.35em 1rem;
+    border-bottom: 1px solid #3a3a3a;
+  }
+
+  article :global(.code-with-filename pre) {
+    border-radius: 0;
+    margin: 0;
+  }
+
   article :global(.sr-only) {
     position: absolute;
     width: 1px;

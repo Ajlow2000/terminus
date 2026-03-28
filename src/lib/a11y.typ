@@ -9,3 +9,9 @@
   attrs: (class: "typst-figure"),
   body + html.elem("figcaption", caption),
 )
+
+#let with-filename(filename, code) = html.elem(
+  "div",
+  attrs: (class: "code-with-filename"),
+  html.elem("div", attrs: (class: "code-filename"), filename) + code,
+)

@@ -5,7 +5,7 @@
 ))<frontmatter>
 
 #import "@preview/cetz:0.3.2": canvas, draw
-#import "../../lib/a11y.typ": frame, captioned
+#import "../../lib/a11y.typ": frame, captioned, with-filename
 
 #set text(fill: rgb("#d4d0c8"))
 #show math.equation: eq => html.elem(
@@ -26,13 +26,13 @@ syntax, faster compilation, and first-class support for mathematical notation.
 
 == A code block
 
-```js
+#with-filename("example.js")[```js
 function greet(name) {
   return `Hello, ${name}!`;
 }
 
 console.log(greet("world"));
-```
+```]
 
 == Why Typst?
 

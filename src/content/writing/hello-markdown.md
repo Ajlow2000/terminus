@@ -10,7 +10,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor i
 
 ## A code block
 
-```js
+```js filename="example.js"
 function greet(name) {
   return `Hello, ${name}!`;
 }
