@@ -35,7 +35,7 @@ const formatted = date.toLocaleDateString("en-US", {
   }
 
   time {
-    font-family: monospace;
+    font-family: var(--font-mono);
     font-size: 0.85rem;
     color: #888;
   }
@@ -62,15 +62,16 @@ const formatted = date.toLocaleDateString("en-US", {
   }
 
   article :global(code) {
-    font-family: monospace;
+    font-family: var(--font-mono);
     background: #1e1e1e;
     padding: 0.1em 0.3em;
     border-radius: 3px;
-    font-size: 0.9em;
+    font-size: 0.875em;
   }
 
   article :global(pre) {
     background: #1e1e1e;
+    font-size: 0.875em;
     padding: 1rem;
     border-radius: 4px;
     overflow-x: auto;
