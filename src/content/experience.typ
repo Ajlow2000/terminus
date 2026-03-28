@@ -4,7 +4,7 @@
 
 #let jobs = (
   (
-    title: "Platform/Systems Software Engineer",
+    title: "Systems Software Engineer",
     company: "SRAM LLC",
     url: "https://www.sram.com/en/sram",
     location: "Colorado Springs, CO",
@@ -111,7 +111,7 @@
     paper-size: "us-letter",
   )
 
-  [== Experience]
+  [= Experience]
 
   for job in jobs {
     resume-entry(
@@ -120,18 +120,19 @@
       date: job.date,
       description: job.company,
     )
-    for bullet in job.bullets {
-      resume-item[#bullet]
+    for (i, bullet) in job.bullets.enumerate() {
+      resume-item[- #bullet]
+      if i < job.bullets.len() - 1 { v(-0.7em) }
     }
   }
 
-  [== Skills]
+  [= Skills]
 
   for skill in skills {
     resume-skill-item(skill.label, skill.items)
   }
 
-  [== Education]
+  [= Education]
 
   resume-entry(
     title: education.degree,
