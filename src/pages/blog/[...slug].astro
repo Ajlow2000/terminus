@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
 import BlogPost from "../../layouts/BlogPost.astro";
+import SyntaxHighlightedContent from "../../components/SyntaxHighlightedContent.astro";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
@@ -15,5 +16,7 @@ const { Content } = await render(post);
 ---
 
 <BlogPost title={post.data.title} date={post.data.date} description={post.data.description}>
-  <Content />
+  <SyntaxHighlightedContent>
+    <Content />
+  </SyntaxHighlightedContent>
 </BlogPost>

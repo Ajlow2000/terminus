@@ -13,6 +13,7 @@
     "@myriaddreamin/typst.ts": "^0.7.0-rc2",
     "astro": "^5.5.3",
     "astro-typst": "^0.12.3",
-    "cheerio": "^1.2.0"
+    "cheerio": "^1.2.0",
+    "shiki": "^4.0.2"
   }
 }
