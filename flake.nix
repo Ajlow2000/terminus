@@ -15,6 +15,9 @@
           packages = with pkgs; [
             nodejs_22
             bun
+            tinymist
+            typescript-language-server
+            marksman
           ];
 
           shellHook = ''
