@@ -1,6 +1,7 @@
 ---
 import * as cheerio from "cheerio";
 import { codeToHtml } from "shiki";
+import { SYNTAX_THEME } from "../config";
 
 const rawHtml = await Astro.slots.render("default");
 const $ = cheerio.load(rawHtml);
@@ -17,8 +18,7 @@ for (const el of blocks.toArray()) {
   jobs.push(
     codeToHtml(code, {
       lang,
-      theme: "github-dark",
-      colorReplacements: { "#0d1117": "#1e1e1e" },
+      theme: SYNTAX_THEME,
     })
       .then((highlighted) => {
         $code.closest("pre").replaceWith(highlighted);
