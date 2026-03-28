@@ -18,6 +18,10 @@
             tinymist
             typescript-language-server
             marksman
+            just
+            typst
+            source-sans
+            roboto
           ];
 
           shellHook = ''

@@ -1,0 +1,111 @@
+---
+import ExperienceContent from '../content/experience.typ';
+import Layout from '../layouts/Layout.astro';
+---
+<Layout title="Experience — Alec Lowry">
+  <article>
+    <ExperienceContent />
+  </article>
+</Layout>
+
+<style>
+  article {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+  }
+
+  article :global(h1) {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #8ab4f8;
+    margin: 2.5rem 0 1rem;
+    border-bottom: 1px solid #333;
+    padding-bottom: 0.4rem;
+  }
+
+  article :global(h1:first-child) {
+    margin-top: 0;
+  }
+
+  article :global(.entry) {
+    margin-bottom: 1.5rem;
+  }
+
+  article :global(.entry-header) {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+  }
+
+  article :global(.entry-title) {
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  article :global(.entry-title a) {
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  article :global(.entry-title a:hover) {
+    color: #8ab4f8;
+    text-decoration: underline;
+  }
+
+  article :global(.entry-date) {
+    color: #888;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  article :global(.entry-meta) {
+    color: #aaa;
+    font-size: 0.8rem;
+    margin: 0.2rem 0 0.5rem;
+  }
+
+  article :global(.entry-courses) {
+    color: #aaa;
+    font-size: 0.8rem;
+    margin-top: 0.4rem;
+  }
+
+  article :global(ul) {
+    margin: 0.4rem 0 0;
+    padding-left: 1.4rem;
+    color: #bbb;
+  }
+
+  article :global(li) {
+    margin-bottom: 0.25rem;
+    line-height: 1.5;
+  }
+
+  article :global(.skills) {
+    margin: 0;
+    padding: 0;
+  }
+
+  article :global(.skill-row) {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 0.4rem;
+    align-items: baseline;
+  }
+
+  article :global(.skill-row dt) {
+    color: #888;
+    font-size: 0.8rem;
+    min-width: 6rem;
+    flex-shrink: 0;
+  }
+
+  article :global(.skill-row dd) {
+    margin: 0;
+    color: var(--color-text);
+  }
+</style>
