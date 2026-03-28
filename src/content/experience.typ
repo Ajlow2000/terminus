@@ -59,19 +59,6 @@
   ),
 )
 
-#let skills = (
-  (
-    label: "Professional",
-    items: ("Rust", "Linux", "Java", "CLI development", "C/C++", "Python", "Reading the docs"),
-    strong-items: ("Rust", "Linux"),
-  ),
-  (
-    label: "Hobbyist",
-    items: ("NixOS", "Ansible", "Docker", "Golang", "Embedded C", "Nmap", "Wireshark", "Binary Analysis"),
-    strong-items: ("NixOS",),
-  ),
-)
-
 #let education = (
   institution: "University of Wisconsin–Madison",
   degree: "B.S. Computer Science",
@@ -126,12 +113,6 @@
     }
   }
 
-  [= Skills]
-
-  for skill in skills {
-    resume-skill-item(skill.label, skill.items)
-  }
-
   [= Education]
 
   resume-entry(
@@ -161,21 +142,6 @@
       #list(..job.bullets.map(b => [#b]))
     ]
   }
-
-  [= Skills]
-
-  html.elem("dl", attrs: (class: "skills"))[
-    #for skill in skills {
-      html.elem("div", attrs: (class: "skill-row"))[
-        #html.elem("dt")[#skill.label]
-        #html.elem("dd")[
-          #skill.items.map(item => {
-            if skill.strong-items.contains(item) { strong(item) } else { item }
-          }).join([, ])
-        ]
-      ]
-    }
-  ]
 
   [= Education]
 
