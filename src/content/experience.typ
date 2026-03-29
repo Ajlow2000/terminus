@@ -48,7 +48,7 @@
     title: "Junior Technician",
     company: "Kozar Technologies",
     url: "https://kozartech.com",
-    location: "Stevens Point, WI",
+    location: "Eagle River, WI",
     date: "Jun 2018 – Aug 2019",
     bullets: (
     "Deploy and service networking, security, and audio systems in residential and small-medium commercial settings.",
