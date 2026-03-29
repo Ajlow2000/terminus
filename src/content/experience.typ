@@ -131,13 +131,11 @@
   for job in jobs {
     html.elem("div", attrs: (class: "entry"))[
       #html.elem("div", attrs: (class: "entry-header"))[
-        #html.elem("span", attrs: (class: "entry-title"))[
-          #link(job.url)[#job.title]
-        ]
+        #html.elem("span", attrs: (class: "entry-title"))[#job.title]
         #html.elem("span", attrs: (class: "entry-date"))[#job.date]
       ]
       #html.elem("div", attrs: (class: "entry-meta"))[
-        #job.company #sym.dot.c #job.location
+        #link(job.url)[#job.company] #sym.dot.c #job.location
       ]
       #list(..job.bullets.map(b => [#b]))
     ]

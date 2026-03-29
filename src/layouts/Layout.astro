@@ -104,7 +104,12 @@ const { title } = Astro.props;
         text-decoration: underline;
       }
 
-      a {
+      :global(a) {
+        color: var(--color-text-muted);
+        text-decoration: none;
+      }
+
+      :global(a:hover) {
         color: var(--color-accent);
       }
     </style>
