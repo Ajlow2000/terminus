@@ -4,8 +4,8 @@
 - [x] expand `:root` in `Layout.astro` with a full color token set (headings, body, muted, accent, borders, code-bg)
 - [x] replace all hardcoded colors across all files with the new variables
 - [x] consolidate the four muted gray shades (`#aaa`, `#888`, `#666`, `#555`) into 2–3 intentional semantic levels
-- [ ] extract series slug generation into a shared utility (duplicated in `BlogPost.astro` and `series/[series].astro`)
-- [ ] extract date formatting into a shared utility (duplicated across 5 files)
+- [x] extract series slug generation into a shared utility (duplicated in `BlogPost.astro` and `series/[series].astro`)
+- [x] extract date formatting into a shared utility (duplicated across 5 files)
 
 ## mobile
 - [ ] add `@media (max-width: 600px)` to `BlogPost.astro`: stack `.title-row` vertically (title above date)

@@ -1,5 +1,6 @@
 ---
 import Layout from "./Layout.astro";
+import { toSlug, formatDate } from "../utils/format";
 
 interface Props {
   title: string;
@@ -12,16 +13,9 @@ const { title, date, description, post } = Astro.props;
 
 const seriesName = post?.data?.series?.name;
 const currentPart = post?.data?.series?.part;
-const seriesSlug = seriesName
-  ? seriesName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")
-  : null;
+const seriesSlug = seriesName ? toSlug(seriesName) : null;
 
-const formatted = date.toLocaleDateString("en-US", {
-  year: "numeric",
-  month: "long",
-  day: "numeric",
-  timeZone: "UTC",
-});
+const formatted = formatDate(date, "long");
 ---
 
 <Layout title={title}>
