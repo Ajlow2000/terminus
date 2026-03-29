@@ -1,0 +1,103 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+
+const posts = await getCollection("writing");
+const seriesMap = new Map<string, typeof posts>();
+
+posts.forEach((post) => {
+  if (post.data.series) {
+    const name = post.data.series.name;
+    if (!seriesMap.has(name)) seriesMap.set(name, []);
+    seriesMap.get(name)!.push(post);
+  }
+});
+
+const series = Array.from(seriesMap.entries())
+  .sort((a, b) => a[0].localeCompare(b[0]))
+  .map(([name, posts]) => ({
+    name,
+    posts: posts.sort((a, b) => a.data.series!.part - b.data.series!.part),
+  }));
+---
+
+<Layout title="series — terminus">
+  <h1>series</h1>
+  {
+    series.map(({ name, posts }) => (
+      <section>
+        <h2>{name}</h2>
+        <ol>
+          {posts.map((post) => (
+            <li>
+              <a href={`/writing/${post.id.replace(/\.[^.]+$/, "")}`}>{post.data.title}</a>
+              <time>{post.data.date.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric", timeZone: "UTC" })}</time>
+            </li>
+          ))}
+        </ol>
+      </section>
+    ))
+  }
+</Layout>
+
+<style>
+  h1 {
+    color: #ffffff;
+    margin: 0 0 2rem;
+  }
+
+  section {
+    margin-bottom: 2.5rem;
+  }
+
+  h2 {
+    color: #e0ddd5;
+    font-size: 1rem;
+    font-family: var(--font-mono);
+    margin: 0 0 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #2a2a2a;
+  }
+
+  ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    counter-reset: series-counter;
+  }
+
+  li {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.4rem 0;
+    gap: 1rem;
+    counter-increment: series-counter;
+  }
+
+  li::before {
+    content: counter(series-counter) ".";
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: #444;
+    min-width: 1.5rem;
+  }
+
+  a {
+    color: #d4d0c8;
+    text-decoration: none;
+    flex: 1;
+  }
+
+  a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+  }
+
+  time {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: #666;
+    white-space: nowrap;
+  }
+</style>

@@ -6,6 +6,13 @@ const writing = defineCollection({
     title: z.string(),
     date: z.coerce.date(),
     description: z.string().optional(),
+    tags: z.array(z.string()).optional().default([]),
+    series: z
+      .object({
+        name: z.string(),
+        part: z.number(),
+      })
+      .optional(),
   }),
 });
 

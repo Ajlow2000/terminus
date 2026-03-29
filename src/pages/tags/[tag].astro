@@ -2,13 +2,21 @@
 import { getCollection } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 
-const posts = (await getCollection("writing")).sort(
-  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
-);
+export async function getStaticPaths() {
+  const posts = await getCollection("writing");
+  const tags = new Set<string>();
+  posts.forEach((post) => post.data.tags?.forEach((t) => tags.add(t)));
+  return Array.from(tags).map((tag) => ({ params: { tag }, props: { tag } }));
+}
+
+const { tag } = Astro.props;
+const posts = (await getCollection("writing"))
+  .filter((p) => p.data.tags?.includes(tag))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
-<Layout title="writing — terminus">
-  <h1>writing</h1>
+<Layout title={`#${tag} — terminus`}>
+  <h1>#{tag}</h1>
   <ul>
     {
       posts.map((post) => (
@@ -24,7 +32,9 @@ const posts = (await getCollection("writing")).sort(
 <style>
   h1 {
     color: #ffffff;
+    font-family: var(--font-mono);
     margin: 0 0 2rem;
+    font-size: 1.25rem;
   }
 
   ul {

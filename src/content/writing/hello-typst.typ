@@ -1,7 +1,12 @@
 #metadata((
-  title: "Hello, Typst",
-  date: "2026-03-16",
-  description: "A test post written in Typst.",
+    title: "Hello, Typst",
+    date: "2026-03-17",
+    description: "A test post written in Typst.",
+    tags: ("typst", "astro"),
+    series: (
+        name: "Building a Blog with Astro",
+        part: 2,
+    )
 ))<frontmatter>
 
 #import "@preview/cetz:0.3.2": canvas, draw
@@ -9,13 +14,13 @@
 
 #set text(fill: rgb("#d4d0c8"))
 #show math.equation: eq => html.elem(
-  "span",
-  attrs: (class: "typst-math"),
-  box(html.frame(eq)) + html.elem("span", attrs: (class: "sr-only"), repr(eq)),
+    "span",
+    attrs: (class: "typst-math"),
+    box(html.frame(eq)) + html.elem("span", attrs: (class: "sr-only"), repr(eq)),
 )
 #show raw.where(block: true): it => html.elem(
-  "pre",
-  html.elem("code", attrs: (class: "language-" + it.lang), it.text),
+    "pre",
+    html.elem("code", attrs: (class: "language-" + it.lang), it.text),
 )
 
 = Hello from Typst
@@ -34,7 +39,7 @@ fn greet(name: &str) -> String {
 fn main() {
     println!("{}", greet("world"));
 }
-```]
+    ```]
 
 == Why Typst?
 
@@ -78,45 +83,45 @@ one month of traffic, illustrating how readership grew through the first half
 of the year.
 
 #frame(
-  alt: "Bar chart: monthly visitors growing from 2.3k in Jan to 5.1k in Jun",
-  canvas(length: 0.75cm, {
-    import draw: *
+    alt: "Bar chart: monthly visitors growing from 2.3k in Jan to 5.1k in Jun",
+    canvas(length: 0.75cm, {
+        import draw: *
 
-    let data = (
-      ("Jan", 2.3), ("Feb", 2.8), ("Mar", 3.5),
-      ("Apr", 4.2), ("May", 3.8), ("Jun", 5.1),
-    )
-    let bar-w = 0.55
-    let spacing = 1.0
-    let color-bar  = rgb("#f587aa")
-    let color-axis = rgb("#888888")
-    let color-text = rgb("#d4d0c8")
+        let data = (
+            ("Jan", 2.3), ("Feb", 2.8), ("Mar", 3.5),
+            ("Apr", 4.2), ("May", 3.8), ("Jun", 5.1),
+        )
+        let bar-w = 0.55
+        let spacing = 1.0
+        let color-bar  = rgb("#f587aa")
+        let color-axis = rgb("#888888")
+        let color-text = rgb("#d4d0c8")
 
-    // Y gridlines and labels
-    for y in range(1, 6) {
-      let yv = y * 1.0
-      line((0, yv), (6.2, yv), stroke: color-axis + 0.3pt)
-      content(
-        (-0.15, yv),
-        anchor: "east",
-        text(size: 7pt, fill: color-text, str(y) + "k"),
-      )
+        // Y gridlines and labels
+        for y in range(1, 6) {
+        let yv = y * 1.0
+        line((0, yv), (6.2, yv), stroke: color-axis + 0.3pt)
+        content(
+            (-0.15, yv),
+            anchor: "east",
+            text(size: 7pt, fill: color-text, str(y) + "k"),
+        )
     }
 
-    // Axes
-    line((0, 0), (6.2, 0), stroke: color-axis + 0.8pt)
-    line((0, 0), (0, 5.5), stroke: color-axis + 0.8pt)
+        // Axes
+        line((0, 0), (6.2, 0), stroke: color-axis + 0.8pt)
+        line((0, 0), (0, 5.5), stroke: color-axis + 0.8pt)
 
-    // Bars and x-labels
-    for (i, (label, value)) in data.enumerate() {
-      let x0 = i * spacing + 0.25
-      rect((x0, 0), (x0 + bar-w, value), fill: color-bar, stroke: none)
-      content(
-        (x0 + bar-w / 2, -0.3),
-        text(size: 7pt, fill: color-text, label),
-      )
+        // Bars and x-labels
+        for (i, (label, value)) in data.enumerate() {
+        let x0 = i * spacing + 0.25
+        rect((x0, 0), (x0 + bar-w, value), fill: color-bar, stroke: none)
+        content(
+            (x0 + bar-w / 2, -0.3),
+            text(size: 7pt, fill: color-text, label),
+        )
     }
-  })
+    })
 )
 
 Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore,
@@ -134,20 +139,20 @@ The table below shows rough GitHub star counts and YoY growth for a selection
 of programming languages as of early 2026.
 
 #captioned(
-  caption: "GitHub star counts and YoY growth for selected programming languages, early 2026.",
-  table(
-    columns: (1fr, 1fr, 1fr),
-    align: (left, right, right),
-    table.header(
-      [*Language*], [*Stars (M)*], [*YoY Growth*],
-    ),
-    [Rust],    [95.4],  [+18%],
-    [Go],      [121.3], [+11%],
-    [Zig],     [14.7],  [+43%],
-    [Python],  [217.6], [+9%],
-    [TypeScript], [101.2], [+14%],
-    [Gleam],   [3.1],   [+67%],
-  )
+    caption: "GitHub star counts and YoY growth for selected programming languages, early 2026.",
+    table(
+        columns: (1fr, 1fr, 1fr),
+        align: (left, right, right),
+        table.header(
+            [*Language*], [*Stars (M)*], [*YoY Growth*],
+        ),
+        [Rust],    [95.4],  [+18%],
+        [Go],      [121.3], [+11%],
+        [Zig],     [14.7],  [+43%],
+        [Python],  [217.6], [+9%],
+        [TypeScript], [101.2], [+14%],
+        [Gleam],   [3.1],   [+67%],
+    )
 )
 
 Qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et
