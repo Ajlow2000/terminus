@@ -10,6 +10,7 @@
 ))<frontmatter>
 
 #import "@preview/cetz:0.3.2": canvas, draw
+#import "@preview/lilaq:0.6.0" as lq
 #import "../../lib/a11y.typ": frame, captioned, with-filename
 #import "../../lib/theme.typ": color-text, color-border, color-accent-subtle
 
@@ -77,6 +78,56 @@ praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias
 excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui
 officia deserunt mollitia animi, id est laborum et dolorum fuga.
 
+== Satisfaction Scores
+
+The chart below shows fictional developer satisfaction scores (0–5) for a
+selection of languages and tools.
+
+#frame(
+    alt: "Horizontal stem chart: developer satisfaction scores, Rust highest at 4.8, Java lowest at 2.8",
+    canvas(length: 0.85cm, {
+        import draw: *
+
+        let data = (
+            ("Java",       2.8),
+            ("TypeScript", 3.7),
+            ("Python",     3.9),
+            ("Go",         4.2),
+            ("Typst",      4.5),
+            ("Rust",       4.8),
+        )
+        let color-bar  = color-accent-subtle
+        let color-axis = color-border
+
+        // X gridlines and labels
+        for x in range(0, 6) {
+            let xv = float(x)
+            line((xv, -0.5), (xv, 5.5), stroke: color-axis + 0.3pt)
+            content(
+                (xv, -0.6),
+                anchor: "north",
+                text(size: 7pt, fill: color-text, str(x)),
+            )
+        }
+
+        // Axes
+        line((0, -0.5), (5.5, -0.5), stroke: color-axis + 0.8pt)
+        line((0, -0.5), (0, 5.5),    stroke: color-axis + 0.8pt)
+
+        // Stems, dots, and y-labels
+        for (i, (label, value)) in data.enumerate() {
+            let yv = float(i)
+            line((0, yv), (value, yv), stroke: color-bar + 1.2pt)
+            circle((value, yv), radius: 0.13, fill: color-bar, stroke: none)
+            content(
+                (-0.15, yv),
+                anchor: "east",
+                text(size: 7pt, fill: color-text, label),
+            )
+        }
+    })
+)
+
 == Monthly Visitors
 
 The chart below shows fictional monthly visitor counts. Each bar represents
@@ -132,6 +183,23 @@ necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae
 non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut
 reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus
 asperiores repellat.
+
+== Vector Field
+
+The diagram below shows a quiver plot of the vector field
+$ bold(F)(x, y) = (y, -x) $, a classic rotation field.
+
+#frame(
+    alt: "Quiver plot of the rotation vector field F(x,y) = (y, -x), showing arrows circling counterclockwise around the origin",
+    lq.diagram(
+        lq.quiver(
+            lq.arange(-2, 3),
+            lq.arange(-2, 3),
+            (x, y) => (y, -x),
+            color: color-accent-subtle,
+        )
+    )
+)
 
 == Language Popularity
 

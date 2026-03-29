@@ -1,6 +1,9 @@
 # Zola build output
 public/
 
+# Typst output
+typst-out/
+
 # Astro
 dist/
 .astro/
