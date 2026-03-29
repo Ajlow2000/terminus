@@ -4,7 +4,7 @@ import Layout from "../../layouts/Layout.astro";
 import PostList from "../../components/PostList.astro";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("writing");
+  const posts = await getCollection("writing", ({ data }) => import.meta.env.PROD ? !data.draft : true);
   const seriesMap = new Map<string, string>();
 
   posts.forEach((post) => {
@@ -24,7 +24,7 @@ export async function getStaticPaths() {
 }
 
 const { name } = Astro.props;
-const posts = (await getCollection("writing"))
+const posts = (await getCollection("writing", ({ data }) => import.meta.env.PROD ? !data.draft : true))
   .filter((p) => p.data.series?.name === name)
   .sort((a, b) => a.data.series!.part - b.data.series!.part);
 ---

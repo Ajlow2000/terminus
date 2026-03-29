@@ -2,6 +2,7 @@
     title: "Hello, Typst",
     date: "2026-03-17",
     description: "A test post written in Typst.",
+    draft: true,
     tags: ("typst", "astro"),
     series: (
         name: "Building a Blog with Astro",

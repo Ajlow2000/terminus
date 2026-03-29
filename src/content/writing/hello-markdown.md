@@ -2,6 +2,7 @@
 title: Hello, Markdown
 date: 2026-03-16
 description: The first post on this blog.
+draft: true
 tags: ["markdown", "astro"]
 series:
   name: "Building a Blog with Astro"

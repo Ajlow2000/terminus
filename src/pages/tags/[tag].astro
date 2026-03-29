@@ -4,14 +4,14 @@ import Layout from "../../layouts/Layout.astro";
 import PostList from "../../components/PostList.astro";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("writing");
+  const posts = await getCollection("writing", ({ data }) => import.meta.env.PROD ? !data.draft : true);
   const tags = new Set<string>();
   posts.forEach((post) => post.data.tags?.forEach((t) => tags.add(t)));
   return Array.from(tags).map((tag) => ({ params: { tag }, props: { tag } }));
 }
 
 const { tag } = Astro.props;
-const posts = (await getCollection("writing"))
+const posts = (await getCollection("writing", ({ data }) => import.meta.env.PROD ? !data.draft : true))
   .filter((p) => p.data.tags?.includes(tag))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
