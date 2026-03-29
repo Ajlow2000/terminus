@@ -126,8 +126,6 @@
 } else {
   set text(fill: rgb("#d4d0c8"))
 
-  [= Experience]
-
   for job in jobs {
     html.elem("div", attrs: (class: "entry"))[
       #html.elem("div", attrs: (class: "entry-header"))[
