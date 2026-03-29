@@ -55,30 +55,34 @@ const formatted = date.toLocaleDateString("en-US", {
   h1 {
     margin: 0;
     font-size: 1.75rem;
-    color: #ffffff;
+    color: var(--color-heading);
   }
 
   time {
     font-family: var(--font-mono);
     font-size: 0.85rem;
-    color: #888;
+    color: var(--color-text-muted);
     white-space: nowrap;
   }
 
   .description {
     margin-top: 0.75rem;
-    color: #aaa;
+    color: var(--color-text-muted);
     font-style: italic;
   }
 
   header {
     margin-bottom: 2.5rem;
     padding-bottom: 1rem;
-    border-bottom: 1px solid #2a2a2a;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  article :global(a) {
+    color: var(--color-accent);
   }
 
   article :global(h2) {
-    color: #e0ddd5;
+    color: var(--color-heading-sub);
     margin-top: 2rem;
   }
 
@@ -88,14 +92,14 @@ const formatted = date.toLocaleDateString("en-US", {
 
   article :global(code) {
     font-family: var(--font-mono);
-    background: #1e1e1e;
+    background: var(--color-surface);
     padding: 0.1em 0.3em;
     border-radius: 3px;
     font-size: 0.875em;
   }
 
   article :global(pre) {
-    background: #1e1e1e;
+    background: var(--color-surface);
     font-size: 0.875em;
     padding: 1rem;
     border-radius: 4px;
@@ -115,12 +119,12 @@ const formatted = date.toLocaleDateString("en-US", {
   }
 
   article :global(.code-filename) {
-    background: #2d2d2d;
-    color: #999;
+    background: var(--color-surface);
+    color: var(--color-text-muted);
     font-family: var(--font-mono);
     font-size: 0.75em;
     padding: 0.35em 1rem;
-    border-bottom: 1px solid #3a3a3a;
+    border-bottom: 1px solid var(--color-border);
   }
 
   article :global(.code-with-filename pre) {
@@ -147,7 +151,7 @@ const formatted = date.toLocaleDateString("en-US", {
 
   article :global(figure.typst-figure figcaption) {
     font-size: 0.85rem;
-    color: #888;
+    color: var(--color-text-muted);
     margin-top: 0.5rem;
   }
 
@@ -171,13 +175,13 @@ const formatted = date.toLocaleDateString("en-US", {
   article :global(th) {
     text-align: left;
     padding: 0.5rem 0.75rem;
-    border-bottom: 2px solid #3a3a3a;
-    color: #e0ddd5;
+    border-bottom: 2px solid var(--color-border);
+    color: var(--color-heading-sub);
   }
 
   article :global(td) {
     padding: 0.4rem 0.75rem;
-    border-bottom: 1px solid #2a2a2a;
+    border-bottom: 1px solid var(--color-border);
   }
 
   article :global(tr:last-child td) {
@@ -194,7 +198,7 @@ const formatted = date.toLocaleDateString("en-US", {
   }
 
   .series-link a {
-    color: #8ab4f8;
+    color: var(--color-accent);
     text-decoration: none;
   }
 
@@ -203,6 +207,6 @@ const formatted = date.toLocaleDateString("en-US", {
   }
 
   .series-part {
-    color: #555;
+    color: var(--color-text-subtle);
   }
 </style>

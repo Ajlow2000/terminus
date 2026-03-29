@@ -1,9 +1,9 @@
 # terminus improvements
 
 ## semantic css
-- [ ] expand `:root` in `Layout.astro` with a full color token set (headings, body, muted, accent, borders, code-bg)
-- [ ] replace all hardcoded colors across all files with the new variables
-- [ ] consolidate the four muted gray shades (`#aaa`, `#888`, `#666`, `#555`) into 2–3 intentional semantic levels
+- [x] expand `:root` in `Layout.astro` with a full color token set (headings, body, muted, accent, borders, code-bg)
+- [x] replace all hardcoded colors across all files with the new variables
+- [x] consolidate the four muted gray shades (`#aaa`, `#888`, `#666`, `#555`) into 2–3 intentional semantic levels
 - [ ] extract series slug generation into a shared utility (duplicated in `BlogPost.astro` and `series/[series].astro`)
 - [ ] extract date formatting into a shared utility (duplicated across 5 files)
 

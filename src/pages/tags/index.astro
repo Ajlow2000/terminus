@@ -29,7 +29,7 @@ const tags = Array.from(tagCounts.entries()).sort((a, b) => b[1] - a[1]);
 
 <style>
   h1 {
-    color: #ffffff;
+    color: var(--color-heading);
     margin: 0 0 2rem;
   }
 
@@ -44,24 +44,24 @@ const tags = Array.from(tagCounts.entries()).sort((a, b) => b[1] - a[1]);
     justify-content: space-between;
     align-items: baseline;
     padding: 0.5rem 0;
-    border-bottom: 1px solid #1e1e1e;
+    border-bottom: 1px solid var(--color-border);
   }
 
   a {
-    color: #d4d0c8;
+    color: var(--color-text);
     text-decoration: none;
     font-family: var(--font-mono);
     font-size: 0.9rem;
   }
 
   a:hover {
-    color: #ffffff;
+    color: var(--color-heading);
     text-decoration: underline;
   }
 
   .count {
     font-family: var(--font-mono);
     font-size: 0.8rem;
-    color: #666;
+    color: var(--color-text-subtle);
   }
 </style>

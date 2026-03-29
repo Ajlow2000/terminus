@@ -47,14 +47,14 @@ const posts = (await getCollection("writing"))
   .label {
     font-family: var(--font-mono);
     font-size: 0.8rem;
-    color: #555;
+    color: var(--color-text-subtle);
     margin: 0 0 0.5rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
 
   h1 {
-    color: #ffffff;
+    color: var(--color-heading);
     margin: 0 0 2rem;
   }
 
@@ -70,7 +70,7 @@ const posts = (await getCollection("writing"))
     justify-content: space-between;
     align-items: baseline;
     padding: 0.5rem 0;
-    border-bottom: 1px solid #1e1e1e;
+    border-bottom: 1px solid var(--color-border);
     gap: 1rem;
     counter-increment: series-counter;
   }
@@ -79,25 +79,25 @@ const posts = (await getCollection("writing"))
     content: counter(series-counter) ".";
     font-family: var(--font-mono);
     font-size: 0.8rem;
-    color: #444;
+    color: var(--color-text-subtle);
     min-width: 1.25rem;
   }
 
   a {
-    color: #d4d0c8;
+    color: var(--color-text);
     text-decoration: none;
     flex: 1;
   }
 
   a:hover {
-    color: #ffffff;
+    color: var(--color-heading);
     text-decoration: underline;
   }
 
   time {
     font-family: var(--font-mono);
     font-size: 0.8rem;
-    color: #666;
+    color: var(--color-text-subtle);
     white-space: nowrap;
   }
 </style>
