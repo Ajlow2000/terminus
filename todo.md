@@ -8,11 +8,11 @@
 - [x] extract date formatting into a shared utility (duplicated across 5 files)
 
 ## mobile
-- [ ] add `@media (max-width: 600px)` to `BlogPost.astro`: stack `.title-row` vertically (title above date)
-- [ ] add responsive stacking to post/tag/series list items (title above date on narrow screens)
-- [ ] reduce h1 font size on mobile (`1.75rem` → ~`1.35rem` in BlogPost, `2rem` → ~`1.5rem` on index)
-- [ ] wrap tables in `BlogPost.astro` with an `overflow-x: auto` container
-- [ ] add padding to nav links in `Layout.astro` to meet 44px touch target minimum
+- [x] add `@media (max-width: 600px)` to `BlogPost.astro`: stack `.title-row` vertically (title above date)
+- [x] add responsive stacking to post/tag/series list items (title above date on narrow screens)
+- [x] reduce h1 font size on mobile (`1.75rem` → ~`1.35rem` in BlogPost, `2rem` → ~`1.5rem` on index)
+- [x] wrap tables in `BlogPost.astro` with an `overflow-x: auto` container
+- [x] add padding to nav links in `Layout.astro` to meet 44px touch target minimum
 
 ## accessibility
 - [ ] fix color contrast: `.series-part` (`#555` on `#0f0f0f` is ~2.6:1, below WCAG AA)
