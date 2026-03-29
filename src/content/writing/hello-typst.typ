@@ -11,8 +11,9 @@
 
 #import "@preview/cetz:0.3.2": canvas, draw
 #import "../../lib/a11y.typ": frame, captioned, with-filename
+#import "../../lib/theme.typ": color-text, color-border, color-accent
 
-#set text(fill: rgb("#d4d0c8"))
+#set text(fill: color-text)
 #show math.equation: eq => html.elem(
     "span",
     attrs: (class: "typst-math"),
@@ -93,9 +94,8 @@ of the year.
         )
         let bar-w = 0.55
         let spacing = 1.0
-        let color-bar  = rgb("#f587aa")
-        let color-axis = rgb("#888888")
-        let color-text = rgb("#d4d0c8")
+        let color-bar  = color-accent
+        let color-axis = color-border
 
         // Y gridlines and labels
         for y in range(1, 6) {
