@@ -54,10 +54,11 @@ const { title } = Astro.props;
         --palette-forest: #404E3B;
         --palette-forest-mid: #526648;
         --palette-forest-dark: #2D3829;
+        --palette-pink: #c290b8;
 
         /* semantic — what each role means */
-        --color-bg: var(--palette-forest);
-        --color-surface: var(--palette-forest-dark);  /* code blocks, inset areas */
+        --color-bg: var(--palette-forest-dark);
+        --color-surface: var(--palette-forest);  /* code blocks, inset areas */
         --color-border: var(--palette-forest-mid);    /* dividers, borders */
 
         --color-heading: var(--palette-white);        /* h1 */
@@ -66,7 +67,7 @@ const { title } = Astro.props;
         --color-text-muted: var(--palette-mist);      /* dates, secondary labels */
         --color-text-subtle: var(--palette-sage);     /* tertiary labels, counters */
 
-        --color-accent: var(--palette-slate);         /* links */
+        --color-accent-subtle: var(--palette-slate);         /* links */
 
         --font-body: Georgia, "Times New Roman", serif;
         --font-mono: "Hack", ui-monospace, Menlo, Consolas, monospace;
@@ -93,7 +94,7 @@ const { title } = Astro.props;
       }
 
       nav a {
-        color: var(--color-accent);
+        color: var(--color-accent-subtle);
         text-decoration: none;
         margin-right: 1.5rem;
         font-family: var(--font-mono);
@@ -110,7 +111,7 @@ const { title } = Astro.props;
       }
 
       :global(a:hover) {
-        color: var(--color-accent);
+        color: var(--color-accent-subtle);
       }
     </style>
   </head>

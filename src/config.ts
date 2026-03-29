@@ -1,1 +1,2 @@
-export const SYNTAX_THEME = "everforest-dark";
+import { syntaxTheme } from "./lib/syntax-theme";
+export const SYNTAX_THEME = syntaxTheme;

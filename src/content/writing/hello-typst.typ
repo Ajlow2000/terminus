@@ -11,7 +11,7 @@
 
 #import "@preview/cetz:0.3.2": canvas, draw
 #import "../../lib/a11y.typ": frame, captioned, with-filename
-#import "../../lib/theme.typ": color-text, color-border, color-accent
+#import "../../lib/theme.typ": color-text, color-border, color-accent-subtle
 
 #set text(fill: color-text)
 #show math.equation: eq => html.elem(
@@ -40,7 +40,7 @@ fn greet(name: &str) -> String {
 fn main() {
     println!("{}", greet("world"));
 }
-    ```]
+```]
 
 == Why Typst?
 
@@ -94,7 +94,7 @@ of the year.
         )
         let bar-w = 0.55
         let spacing = 1.0
-        let color-bar  = color-accent
+        let color-bar  = color-accent-subtle
         let color-axis = color-border
 
         // Y gridlines and labels
