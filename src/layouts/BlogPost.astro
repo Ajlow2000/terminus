@@ -151,7 +151,19 @@ const formatted = date.toLocaleDateString("en-US", {
     margin-top: 0.5rem;
   }
 
-  article :global(span.typst-math) {
+  article :global(span.typst-math-inline) {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 1;
+  }
+
+  article :global(span.typst-math-inline svg) {
+    height: 1em;
+    width: auto;
+    overflow: visible;
+  }
+
+  article :global(span.typst-math-block) {
     display: block;
     text-align: center;
     margin: 1.5rem 0;
@@ -206,3 +218,42 @@ const formatted = date.toLocaleDateString("en-US", {
     color: var(--color-text-subtle);
   }
 </style>
+
+<script>
+  // Typst's HTML export puts html.frame() content in its own <p> even for
+  // inline math. Merge those isolated math paragraphs back into surrounding text.
+  document.querySelectorAll('article span.typst-math-inline').forEach(mathSpan => {
+    const mathP = mathSpan.parentElement;
+    if (!mathP || mathP.tagName !== 'P') return;
+
+    const isIsolated = [...mathP.childNodes].every(
+      node => node === mathSpan || (node.nodeType === 3 && node.textContent.trim() === '')
+    );
+    if (!isIsolated) return;
+
+    const prevP = mathP.previousElementSibling;
+    if (prevP?.tagName !== 'P') return;
+
+    const nextP = mathP.nextElementSibling;
+    prevP.appendChild(mathSpan);
+    mathP.remove();
+
+    if (nextP?.tagName === 'P') {
+      while (nextP.firstChild) prevP.appendChild(nextP.firstChild);
+      nextP.remove();
+    }
+  });
+
+  // Convert img.typst-frame inside inline math to inline SVG so
+  // overflow: visible works and tall glyphs (∫, ∑, …) aren't clipped.
+  document.querySelectorAll('article span.typst-math-inline img.typst-frame').forEach(img => {
+    const src = img.getAttribute('src') ?? '';
+    if (!src.startsWith('data:image/svg+xml;base64,')) return;
+
+    const svgText = atob(src.slice('data:image/svg+xml;base64,'.length));
+    const doc = new DOMParser().parseFromString(svgText, 'image/svg+xml');
+    const svg = doc.documentElement;
+
+    img.replaceWith(svg);
+  });
+</script>

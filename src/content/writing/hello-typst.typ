@@ -17,7 +17,7 @@
 #set text(fill: color-text)
 #show math.equation: eq => html.elem(
     "span",
-    attrs: (class: "typst-math"),
+    attrs: (class: "typst-math " + if eq.block { "typst-math-block" } else { "typst-math-inline" }),
     box(html.frame(eq)) + html.elem("span", attrs: (class: "sr-only"), repr(eq)),
 )
 #show raw.where(block: true): it => html.elem(
@@ -49,8 +49,8 @@ Typst has great math support: $ x^2 + y^2 = z^2 $
 
 And clean syntax for structured documents. The Pythagorean theorem above is a
 classic example, but Typst handles arbitrarily complex expressions just as
-elegantly, from Maxwell's equations $ nabla dot bold(E) = rho / epsilon_0 $
-to the Gaussian integral $ integral_(-oo)^(oo) e^(-x^2) dif x = sqrt(pi) $.
+elegantly, from Maxwell's equations $nabla dot bold(E) = rho / epsilon_0$
+to the Gaussian integral $integral_(-oo)^(oo) e^(-x^2) dif x = sqrt(pi)$.
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
 incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
@@ -187,7 +187,7 @@ asperiores repellat.
 == Vector Field
 
 The diagram below shows a quiver plot of the vector field
-$ bold(F)(x, y) = (y, -x) $, a classic rotation field.
+$bold(F)(x, y) = (y, -x)$, a classic rotation field.
 
 #frame(
     alt: "Quiver plot of the rotation vector field F(x,y) = (y, -x), showing arrows circling counterclockwise around the origin",
