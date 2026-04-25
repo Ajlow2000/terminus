@@ -19,9 +19,9 @@ import Layout from '../layouts/Layout.astro';
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.12em;
-    color: #8ab4f8;
+    color: var(--color-accent);
     margin: 2.5rem 0 1rem;
-    border-bottom: 1px solid #333;
+    border-bottom: 1px solid var(--color-border);
     padding-bottom: 0.4rem;
   }
 
@@ -51,25 +51,25 @@ import Layout from '../layouts/Layout.astro';
   }
 
   article :global(.entry-title a:hover) {
-    color: #8ab4f8;
+    color: var(--color-accent);
     text-decoration: underline;
   }
 
   article :global(.entry-date) {
-    color: #888;
+    color: var(--color-text-muted);
     font-size: 0.8rem;
     white-space: nowrap;
     flex-shrink: 0;
   }
 
   article :global(.entry-meta) {
-    color: #aaa;
+    color: var(--color-text-muted);
     font-size: 0.8rem;
     margin: 0.2rem 0 0.5rem;
   }
 
   article :global(.entry-courses) {
-    color: #aaa;
+    color: var(--color-text-muted);
     font-size: 0.8rem;
     margin-top: 0.4rem;
   }
@@ -77,7 +77,7 @@ import Layout from '../layouts/Layout.astro';
   article :global(ul) {
     margin: 0.4rem 0 0;
     padding-left: 1.4rem;
-    color: #bbb;
+    color: var(--color-text);
   }
 
   article :global(li) {
@@ -98,7 +98,7 @@ import Layout from '../layouts/Layout.astro';
   }
 
   article :global(.skill-row dt) {
-    color: #888;
+    color: var(--color-text-muted);
     font-size: 0.8rem;
     min-width: 6rem;
     flex-shrink: 0;

@@ -1,8 +1,8 @@
 ---
 import { getCollection } from "astro:content";
-import Layout from "../../layouts/Layout.astro";
-import PostList from "../../components/PostList.astro";
-import { toSlug } from "../../utils/format";
+import Layout from "../../../layouts/Layout.astro";
+import PostList from "../../../components/PostList.astro";
+import { toSlug } from "../../../utils/format";
 
 export async function getStaticPaths() {
   const posts = await getCollection("writing", ({ data }) => import.meta.env.PROD ? !data.draft : true);

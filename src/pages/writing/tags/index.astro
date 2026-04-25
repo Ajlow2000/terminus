@@ -1,6 +1,6 @@
 ---
 import { getCollection } from "astro:content";
-import Layout from "../../layouts/Layout.astro";
+import Layout from "../../../layouts/Layout.astro";
 
 const posts = await getCollection("writing", ({ data }) => import.meta.env.PROD ? !data.draft : true);
 const tagCounts = new Map<string, number>();
@@ -19,7 +19,7 @@ const tags = Array.from(tagCounts.entries()).sort((a, b) => b[1] - a[1]);
     {
       tags.map(([tag, count]) => (
         <li>
-          <a href={`/tags/${tag}`}>#{tag}</a>
+          <a href={`/writing/tags/${tag}`}>#{tag}</a>
           <span class="count">{count}</span>
         </li>
       ))

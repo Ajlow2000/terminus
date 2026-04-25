@@ -6,9 +6,9 @@ const linen       = "#E6E6E6";
 const mist        = "#BAC8B1";
 const sage        = "#7B9669";
 const slate       = "#6C8480";
-const forest      = "#404E3B";
+const forest      = "#3A4A35";
 const forestMid   = "#526648";
-const forestDark  = "#2D3829";
+const forestDark  = "#252E21";
 
 export const syntaxTheme: ThemeRegistrationRaw = {
   name: "terminus-dark",

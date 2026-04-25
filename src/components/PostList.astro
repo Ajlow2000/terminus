@@ -39,9 +39,9 @@ const Tag = numbered ? "ol" : "ul";
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    padding: 0.5rem 0;
+    padding: 0.65rem 0;
     border-bottom: 1px solid var(--color-border);
-    gap: 0.25rem;
+    gap: 1rem;
     counter-increment: post-counter;
   }
 
@@ -57,10 +57,11 @@ const Tag = numbered ? "ol" : "ul";
     color: var(--color-text);
     text-decoration: none;
     flex: 1;
+    transition: color 0.15s ease;
   }
 
   a:hover {
-    color: var(--color-heading);
+    color: var(--color-accent);
     text-decoration: underline;
   }
 

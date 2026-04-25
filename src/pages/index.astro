@@ -1,23 +1,107 @@
 ---
+import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
+import PostList from "../components/PostList.astro";
+
+const posts = (await getCollection("writing", ({ data }) => import.meta.env.PROD ? !data.draft : true))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 5);
 ---
 
 <Layout title="terminus">
-  <h1>terminus</h1>
-  <p>A personal site. Writing and notes.</p>
-  <p><a href="/writing">writing →</a></p>
+  <section class="hero">
+    <h1>Alec Lowry</h1>
+    <p class="tagline">Software engineer. Building things and writing about it.</p>
+    <div class="social-links">
+      <a href="https://github.com/ajlow2000" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a href="https://linkedin.com/in/ajlow2000" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+    </div>
+  </section>
+
+  <section class="recent-writing">
+    <h2>Recent Writing</h2>
+    <PostList posts={posts} />
+    <a href="/writing" class="view-all">all posts &rarr;</a>
+  </section>
 </Layout>
 
 <style>
+  .hero {
+    margin-bottom: 4rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
   h1 {
-    font-size: 2rem;
+    font-size: 2.5rem;
     color: var(--color-heading);
-    margin: 0 0 1rem;
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  .tagline {
+    font-size: 1.15rem;
+    color: var(--color-text-muted);
+    margin: 0 0 1.5rem;
+    line-height: 1.5;
+  }
+
+  .social-links {
+    display: flex;
+    gap: 1.25rem;
+  }
+
+  .social-links a {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--color-accent-subtle);
+    text-decoration: none;
+    padding: 0.4rem 0.85rem;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+  }
+
+  .social-links a:hover {
+    color: var(--color-accent);
+    border-color: var(--color-accent-subtle);
+    background: rgba(143, 169, 165, 0.08);
+  }
+
+  .recent-writing h2 {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-subtle);
+    margin: 0 0 1.25rem;
+  }
+
+  .view-all {
+    display: inline-block;
+    margin-top: 1.25rem;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--color-accent-subtle);
+  }
+
+  .view-all:hover {
+    color: var(--color-accent);
   }
 
   @media (max-width: 600px) {
     h1 {
-      font-size: 1.5rem;
+      font-size: 1.75rem;
+    }
+
+    .tagline {
+      font-size: 1rem;
+    }
+
+    .social-links {
+      flex-wrap: wrap;
+      gap: 0.75rem;
     }
   }
 </style>

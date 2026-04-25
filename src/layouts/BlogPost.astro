@@ -27,7 +27,7 @@ const formatted = formatDate(date, "long");
       </div>
       {seriesName && (
         <p class="series-link">
-          <a href={`/series/${seriesSlug}`}>{seriesName}</a>
+          <a href={`/writing/series/${seriesSlug}`}>{seriesName}</a>
           <span class="series-part">part {currentPart}</span>
         </p>
       )}
@@ -38,6 +38,11 @@ const formatted = formatDate(date, "long");
 </Layout>
 
 <style>
+  article {
+    max-width: var(--content-width-narrow);
+    margin: 0 auto;
+  }
+
   .title-row {
     display: flex;
     align-items: baseline;
@@ -207,6 +212,7 @@ const formatted = formatDate(date, "long");
   }
 
   .series-link a:hover {
+    color: var(--color-accent);
     text-decoration: underline;
   }
 

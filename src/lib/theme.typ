@@ -1,12 +1,13 @@
 // palette
 #let palette-white       = rgb("#ffffff")
-#let palette-linen       = rgb("#E6E6E6")
+#let palette-linen       = rgb("#E8E8E8")
 #let palette-mist        = rgb("#BAC8B1")
-#let palette-sage        = rgb("#7B9669")
-#let palette-slate       = rgb("#6C8480")
-#let palette-forest      = rgb("#404E3B")
-#let palette-forest-mid  = rgb("#526648")
-#let palette-forest-dark = rgb("#2D3829")
+#let palette-sage        = rgb("#94AE87")
+#let palette-slate       = rgb("#8FA9A5")
+#let palette-slate-bright = rgb("#A3C0BC")
+#let palette-forest      = rgb("#3A4A35")
+#let palette-forest-mid  = rgb("#4E5F47")
+#let palette-forest-dark = rgb("#252E21")
 #let palette-pink         = rgb("#c290b8")
 
 // semantic
@@ -18,4 +19,5 @@
 #let color-text        = palette-linen
 #let color-text-muted  = palette-mist
 #let color-text-subtle = palette-sage
-#let color-accent-subtle      = palette-pink
+#let color-accent      = palette-slate-bright
+#let color-accent-subtle = palette-slate
