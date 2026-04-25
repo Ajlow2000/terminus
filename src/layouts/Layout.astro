@@ -58,7 +58,9 @@ const currentPath = Astro.url.pathname;
         <a class:list={["nav-link", { active: currentPath === "/likes" || currentPath === "/likes/" }]} href="/likes">likes</a>
         <a class:list={["nav-link", { active: currentPath === "/about" || currentPath === "/about/" }]} href="/about">about</a>
       </div>
-      <slot />
+      <div class="main-content">
+        <slot />
+      </div>
       <footer class="footer">
         <div class="container-wide footer-inner">
           <span>&copy; 2025 Alec Lowry</span>
@@ -174,6 +176,7 @@ const currentPath = Astro.url.pathname;
 
   /* ── Layout ─────────────────────────────────────────── */
   .app { min-height: 100vh; display: flex; flex-direction: column; }
+  .main-content { flex: 1; display: flex; flex-direction: column; }
   .container { max-width: 720px; margin: 0 auto; padding: 0 24px; width: 100%; }
   .container-wide { max-width: 1200px; margin: 0 auto; padding: 0 32px; width: 100%; }
 
