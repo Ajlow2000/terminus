@@ -35,10 +35,11 @@ if (seriesName) {
 }
 
 const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
+const hasToc = tocHeadings.length > 0;
 ---
 
 <Layout title={`${title} — Alec Lowry`} description={description} ogType="article">
-  <div class="post-layout">
+  <div class:list={["post-layout", { "no-toc": !hasToc }]}>
     {tocHeadings.length > 0 && (
       <aside class="toc" id="toc">
         <h4>On this page</h4>
@@ -100,6 +101,10 @@ const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
     padding: 48px 32px 0;
     max-width: 1080px;
     margin: 0 auto;
+  }
+  .post-layout.no-toc {
+    grid-template-columns: minmax(0, 720px);
+    justify-content: center;
   }
   .post-article { min-width: 0; }
   @media (max-width: 880px) {

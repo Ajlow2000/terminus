@@ -30,6 +30,17 @@ for (const el of blocks.toArray()) {
 }
 
 await Promise.all(jobs);
+
+// Inject id attributes on headings that lack them (Typst output has none).
+$("h1, h2, h3, h4, h5, h6").each((_, el) => {
+  const $el = $(el);
+  if (!$el.attr("id")) {
+    const text = $el.text().trim();
+    const slug = text.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+    $el.attr("id", slug);
+  }
+});
+
 const processed = $("body").html() ?? rawHtml;
 ---
 

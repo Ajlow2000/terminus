@@ -1,5 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 import BlogPost from "../../layouts/BlogPost.astro";
 import SyntaxHighlightedContent from "../../components/SyntaxHighlightedContent.astro";
 
@@ -13,9 +15,32 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content, headings } = await render(post);
+
+// astro-typst doesn't implement getHeadings(), so for .typ files
+// we parse headings from the source file directly.
+let resolvedHeadings = headings;
+if ((!headings || headings.length === 0) && post.id.endsWith(".typ")) {
+  const filePath = join(process.cwd(), "src", "content", "writing", post.id);
+  try {
+    const source = await readFile(filePath, "utf-8");
+    resolvedHeadings = [];
+    for (const line of source.split("\n")) {
+      const match = line.match(/^(={1,6})\s+(.+)$/);
+      if (match) {
+        // Typst = renders as <h2>, == as <h3>, etc. (h1 is the post title)
+        const depth = match[1].length + 1;
+        const text = match[2].trim();
+        const slug = text.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+        resolvedHeadings.push({ depth, slug, text });
+      }
+    }
+  } catch {
+    // couldn't read file — proceed without headings
+  }
+}
 ---
 
-<BlogPost title={post.data.title} date={post.data.date} description={post.data.description} post={post} headings={headings}>
+<BlogPost title={post.data.title} date={post.data.date} description={post.data.description} post={post} headings={resolvedHeadings}>
   <SyntaxHighlightedContent>
     <Content />
   </SyntaxHighlightedContent>
