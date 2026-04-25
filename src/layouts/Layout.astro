@@ -226,8 +226,8 @@ const currentPath = Astro.url.pathname;
     align-items: center; justify-content: center; cursor: pointer; color: var(--ink-2);
   }
   .menu-toggle:hover { color: var(--forest); border-color: var(--forest); }
-  .menu-toggle svg { display: block; }
-  .icon-close { display: none; }
+  .menu-toggle .icon-menu { display: block; }
+  .menu-toggle .icon-close { display: none; }
   .mobile-drawer.open ~ .nav .icon-menu,
   .menu-toggle[aria-expanded="true"] .icon-menu { display: none; }
   .menu-toggle[aria-expanded="true"] .icon-close { display: block; }
