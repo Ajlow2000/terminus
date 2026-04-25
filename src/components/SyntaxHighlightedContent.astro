@@ -1,7 +1,7 @@
 ---
 import * as cheerio from "cheerio";
 import { codeToHtml } from "shiki";
-import { SYNTAX_THEME } from "../config";
+import { SYNTAX_THEMES } from "../config";
 
 const rawHtml = await Astro.slots.render("default");
 const $ = cheerio.load(rawHtml);
@@ -18,7 +18,7 @@ for (const el of blocks.toArray()) {
   jobs.push(
     codeToHtml(code, {
       lang,
-      theme: SYNTAX_THEME,
+      themes: SYNTAX_THEMES,
     })
       .then((highlighted) => {
         $code.closest("pre").replaceWith(highlighted);

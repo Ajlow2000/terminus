@@ -7,14 +7,12 @@ import { toSlug } from "../../../utils/format";
 export async function getStaticPaths() {
   const posts = await getCollection("writing", ({ data }) => import.meta.env.PROD ? !data.draft : true);
   const seriesMap = new Map<string, string>();
-
   posts.forEach((post) => {
     if (post.data.series) {
       const slug = toSlug(post.data.series.name);
       seriesMap.set(slug, post.data.series.name);
     }
   });
-
   return Array.from(seriesMap.entries()).map(([slug, name]) => ({
     params: { series: slug },
     props: { name },
@@ -27,25 +25,15 @@ const posts = (await getCollection("writing", ({ data }) => import.meta.env.PROD
   .sort((a, b) => a.data.series!.part - b.data.series!.part);
 ---
 
-<Layout title={`${name} — terminus`}>
-  <p class="label">series</p>
-  <h1>{name}</h1>
-  <PostList posts={posts} numbered />
+<Layout title={`${name} — Alec Lowry`}>
+  <div class="container series-detail-page">
+    <span class="eyebrow">Series</span>
+    <h1>{name}</h1>
+    <PostList posts={posts} numbered />
+  </div>
 </Layout>
 
 <style>
-  .label {
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    color: var(--color-text-subtle);
-    margin: 0 0 0.5rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  h1 {
-    color: var(--color-heading);
-    margin: 0 0 2rem;
-  }
-
+  .series-detail-page { padding: 56px 0 80px; }
+  .series-detail-page h1 { font-size: 36px; margin: 12px 0 32px; }
 </style>

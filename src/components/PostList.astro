@@ -29,57 +29,31 @@ const Tag = numbered ? "ol" : "ul";
 
 <style>
   ul, ol {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+    list-style: none; padding: 0; margin: 0;
     counter-reset: post-counter;
   }
-
   li {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
+    display: flex; justify-content: space-between; align-items: baseline;
     padding: 0.65rem 0;
-    border-bottom: 1px solid var(--color-border);
-    gap: 1rem;
-    counter-increment: post-counter;
+    border-bottom: 1px solid var(--line-2);
+    gap: 1rem; counter-increment: post-counter;
   }
-
   ol li::before {
     content: counter(post-counter) ".";
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    color: var(--color-text-subtle);
-    min-width: 1.25rem;
+    font-family: var(--f-mono); font-size: 12px;
+    color: var(--ink-3); min-width: 1.25rem;
   }
-
   a {
-    color: var(--color-text);
-    text-decoration: none;
-    flex: 1;
-    transition: color 0.15s ease;
+    color: var(--ink); text-decoration: none; flex: 1;
+    transition: color 0.15s;
   }
-
-  a:hover {
-    color: var(--color-accent);
-    text-decoration: underline;
-  }
-
+  a:hover { color: var(--forest); text-decoration: underline; }
   time {
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    color: var(--color-text-subtle);
-    white-space: nowrap;
+    font-family: var(--f-mono); font-size: 12px;
+    color: var(--ink-3); white-space: nowrap;
   }
-
   @media (max-width: 600px) {
-    li {
-      flex-wrap: wrap;
-      row-gap: 0.15rem;
-    }
-
-    time {
-      flex-basis: 100%;
-    }
+    li { flex-wrap: wrap; row-gap: 0.15rem; }
+    time { flex-basis: 100%; }
   }
 </style>

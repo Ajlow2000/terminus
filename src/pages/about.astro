@@ -1,0 +1,28 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="About — Alec Lowry">
+  <div class="container about-page">
+    <span class="eyebrow">About</span>
+    <h1>The short version.</h1>
+    <div class="body">
+      <p>I'm a software engineer. I work on secure workload identity and the boring-but-load-bearing parts of Linux that most people would rather not think about.</p>
+      <p>Outside of that, I paddle whitewater (badly enough to be careful, well enough to lead trips), read more than I retain, and write here when something I learned felt expensive enough to be worth the trouble of writing down.</p>
+      <p>I'm based in the Midwest. The best way to reach me is <a href="mailto:alowry2000@gmail.com">email</a>; I'm slow but reliable.</p>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .about-page { padding: 56px 0 80px; }
+  .about-page h1 {
+    font-size: 44px; margin: 12px 0 24px;
+    letter-spacing: -0.02em;
+  }
+  .body {
+    font-size: 18px; color: var(--ink-2);
+    line-height: 1.7; max-width: 60ch;
+  }
+  .body p { margin: 0 0 1em; }
+</style>

@@ -1,12 +1,12 @@
 import { defineConfig } from "astro/config";
 import { typst } from "astro-typst";
-import { SYNTAX_THEME } from "./src/config.ts";
+import { SYNTAX_THEMES } from "./src/config.ts";
 
 export default defineConfig({
   output: "static",
   markdown: {
     shikiConfig: {
-      theme: SYNTAX_THEME,
+      themes: SYNTAX_THEMES,
       transformers: [
         {
           name: "code-filename",

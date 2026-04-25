@@ -1,0 +1,67 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const likes = [
+  { cat: "Editor",     pick: "Helix",                       why: "Modal, post-vim, and it ships with sensible defaults." },
+  { cat: "Terminal",   pick: "Ghostty",                     why: "Fast, native, and the config language doesn't fight me." },
+  { cat: "Shell",      pick: "fish",                        why: "Autocomplete that's good enough I stopped caring about plugins." },
+  { cat: "Window mgr", pick: "Sway on Wayland",             why: "i3 muscle memory, fewer surprises about screen tearing." },
+  { cat: "Distro",     pick: "Arch + dwm at home, Ubuntu LTS at work", why: "Right tool, right wear pattern." },
+  { cat: "Notes",      pick: "Plain markdown in a git repo",         why: "Outlives every notes app I've tried." },
+  { cat: "Mail",       pick: "aerc",                        why: "TUI mail that respects threading and patches." },
+  { cat: "Browser",    pick: "Firefox",                     why: "Containers + tree-style tabs is still unbeaten." },
+  { cat: "Boat",       pick: "Dagger Mamba 8.6",            why: "Forgiving creeker with enough volume for my weight class." },
+  { cat: "Paddle",     pick: "Werner Powerhouse",           why: "Stiff blade, decent feathered offset, holds up to rocks." },
+  { cat: "PFD",        pick: "Astral Greenjacket",          why: "Rescue PFD I don't notice until I need to notice it." },
+  { cat: "Coffee",     pick: "Aeropress + Lance Hedrick recipes", why: "One device, two thousand opinions about it." },
+  { cat: "Camera",     pick: "Ricoh GR IIIx",               why: "Pocket-sized, snap-focus, no ceremony." },
+  { cat: "Pen",        pick: "Pilot Kakuno EF",             why: "Cheap, smiley, the only fountain pen I haven't lost." },
+  { cat: "Notebook",   pick: "Field Notes Expedition",      why: "Waterproof, fits a kayak deck pocket, survives sweat." },
+];
+---
+
+<Layout title="Stuff I Like — Alec Lowry">
+  <div class="container likes-page">
+    <header>
+      <h1>Stuff I like</h1>
+      <p class="lede">Tools, gear, and small habits I've kept long enough to recommend without hedging too much. Updated when something earns its place — or loses it.</p>
+      <p class="mono muted" style="margin-top: 12px;">Last updated &middot; April 2025</p>
+    </header>
+    <div class="likes-list">
+      {likes.map((l) => (
+        <div class="like-row">
+          <span class="cat">{l.cat}</span>
+          <span class="pick">{l.pick}</span>
+          <span class="why">{l.why}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .likes-page { padding-top: 56px; padding-bottom: 24px; }
+  .likes-page header { margin-bottom: 40px; }
+  .likes-page h1 { font-size: clamp(36px, 6vw, 56px); margin: 0 0 12px; font-weight: 700; }
+  .lede { font-size: 18px; color: var(--ink-2); max-width: 52ch; margin: 0; }
+  .likes-list { display: flex; flex-direction: column; }
+
+  .like-row {
+    display: grid;
+    grid-template-columns: 180px 1fr 2fr;
+    gap: 32px; padding: 18px 0;
+    border-bottom: 1px solid var(--line-2);
+    align-items: baseline;
+  }
+  @media (max-width: 700px) {
+    .like-row { grid-template-columns: 1fr; gap: 4px; padding: 16px 0; }
+  }
+  .like-row .cat {
+    font-family: var(--f-ui); font-size: 11px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.12em; color: var(--forest);
+  }
+  .like-row .pick {
+    font-family: var(--f-display); font-weight: 600; font-size: 19px; color: var(--ink);
+  }
+  .like-row .why { color: var(--ink-2); font-size: 16px; font-style: italic; }
+</style>

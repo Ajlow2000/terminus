@@ -1,73 +1,112 @@
 import type { ThemeRegistrationRaw } from "shiki";
 
-// palette (mirrors src/lib/theme.typ and Layout.astro)
-const white       = "#ffffff";
-const linen       = "#E6E6E6";
-const mist        = "#BAC8B1";
-const sage        = "#7B9669";
-const slate       = "#6C8480";
-const forest      = "#3A4A35";
-const forestMid   = "#526648";
-const forestDark  = "#252E21";
-
-export const syntaxTheme: ThemeRegistrationRaw = {
-  name: "terminus-dark",
-  type: "dark",
+// Light theme — warm papyrus code blocks
+export const syntaxThemeLight: ThemeRegistrationRaw = {
+  name: "terminus-light",
+  type: "light",
+  settings: [],
   colors: {
-    "editor.background":  forest,
-    "editor.foreground":  linen,
-    "editorLineNumber.foreground": forestMid,
+    "editor.background": "#ece2c5",
+    "editor.foreground": "#524a37",
+    "editorLineNumber.foreground": "#a89e80",
   },
   tokenColors: [
-    // comments — subtle green
     {
       scope: ["comment", "punctuation.definition.comment"],
-      settings: { foreground: sage, fontStyle: "italic" },
+      settings: { foreground: "#7e745b", fontStyle: "italic" },
     },
-    // strings — mist
     {
       scope: ["string", "string.quoted", "string.template"],
-      settings: { foreground: mist },
+      settings: { foreground: "#2A6B3A" },
     },
-    // keywords — slate
     {
       scope: ["keyword", "storage.type", "storage.modifier"],
-      settings: { foreground: slate, fontStyle: "bold" },
+      settings: { foreground: "#6B49B1", fontStyle: "bold" },
     },
-    // functions / identifiers — white
     {
       scope: ["entity.name.function", "support.function", "meta.function-call"],
-      settings: { foreground: white },
+      settings: { foreground: "#A04827" },
     },
-    // types / classes — linen
     {
       scope: ["entity.name.type", "entity.name.class", "support.type", "support.class"],
-      settings: { foreground: linen },
+      settings: { foreground: "#256C7E" },
     },
-    // numbers, booleans, constants — mist
     {
       scope: ["constant.numeric", "constant.language", "constant.character"],
-      settings: { foreground: mist },
+      settings: { foreground: "#8B5E1A" },
     },
-    // tags (HTML/JSX) — slate
     {
       scope: ["entity.name.tag", "meta.tag"],
-      settings: { foreground: slate },
+      settings: { foreground: "#6B49B1" },
     },
-    // attributes — sage
     {
       scope: ["entity.other.attribute-name"],
-      settings: { foreground: sage },
+      settings: { foreground: "#A04827" },
     },
-    // variables — linen (default)
     {
       scope: ["variable", "variable.other"],
-      settings: { foreground: linen },
+      settings: { foreground: "#524a37" },
     },
-    // punctuation — slightly muted
+    {
+      scope: ["punctuation"],
+      settings: { foreground: "#7e745b" },
+    },
+  ],
+};
+
+// Dark theme — forest code blocks
+export const syntaxThemeDark: ThemeRegistrationRaw = {
+  name: "terminus-dark",
+  type: "dark",
+  settings: [],
+  colors: {
+    "editor.background": "#2F3D2B",
+    "editor.foreground": "#CDD6C7",
+    "editorLineNumber.foreground": "#526648",
+  },
+  tokenColors: [
+    {
+      scope: ["comment", "punctuation.definition.comment"],
+      settings: { foreground: "#7A8971", fontStyle: "italic" },
+    },
+    {
+      scope: ["string", "string.quoted", "string.template"],
+      settings: { foreground: "#8BD99E" },
+    },
+    {
+      scope: ["keyword", "storage.type", "storage.modifier"],
+      settings: { foreground: "#B898E8", fontStyle: "bold" },
+    },
+    {
+      scope: ["entity.name.function", "support.function", "meta.function-call"],
+      settings: { foreground: "#D9A87A" },
+    },
+    {
+      scope: ["entity.name.type", "entity.name.class", "support.type", "support.class"],
+      settings: { foreground: "#8FC5D0" },
+    },
+    {
+      scope: ["constant.numeric", "constant.language", "constant.character"],
+      settings: { foreground: "#CFAA6A" },
+    },
+    {
+      scope: ["entity.name.tag", "meta.tag"],
+      settings: { foreground: "#B898E8" },
+    },
+    {
+      scope: ["entity.other.attribute-name"],
+      settings: { foreground: "#D9A87A" },
+    },
+    {
+      scope: ["variable", "variable.other"],
+      settings: { foreground: "#CDD6C7" },
+    },
     {
       scope: ["punctuation"],
       settings: { foreground: "#8a9e82" },
     },
   ],
 };
+
+// Legacy single export for backwards compat
+export const syntaxTheme = syntaxThemeDark;

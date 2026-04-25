@@ -16,14 +16,15 @@ const posts = (await getCollection("writing", ({ data }) => import.meta.env.PROD
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
-<Layout title={`#${tag} — terminus`}>
-  <h1>#{tag}</h1>
-  <PostList posts={posts} />
+<Layout title={`#${tag} — Alec Lowry`}>
+  <div class="container tag-page">
+    <span class="eyebrow">Tag</span>
+    <h1>#{tag}</h1>
+    <PostList posts={posts} />
+  </div>
 </Layout>
 
 <style>
-  h1 {
-    color: var(--color-heading);
-    margin: 0 0 2rem;
-  }
+  .tag-page { padding: 56px 0 80px; }
+  .tag-page h1 { font-size: 36px; margin: 12px 0 32px; }
 </style>

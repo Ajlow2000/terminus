@@ -1,107 +1,81 @@
 ---
-import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
-import PostList from "../components/PostList.astro";
-
-const posts = (await getCollection("writing", ({ data }) => import.meta.env.PROD ? !data.draft : true))
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0, 5);
 ---
 
-<Layout title="terminus">
-  <section class="hero">
-    <h1>Alec Lowry</h1>
-    <p class="tagline">Software engineer. Building things and writing about it.</p>
-    <div class="social-links">
-      <a href="https://github.com/ajlow2000" target="_blank" rel="noopener noreferrer">GitHub</a>
-      <a href="https://linkedin.com/in/ajlow2000" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+<Layout title="Alec Lowry — writer, engineer, paddler">
+  <div class="landing">
+    <div class="landing-inner">
+      <div class="landing-portrait" />
+      <span class="eyebrow landing-eyebrow">Writer &middot; Engineer &middot; Paddler</span>
+      <h1 class="landing-name">Alec Lowry</h1>
+      <p class="landing-bio">
+        I'm a software engineer working in cybersecurity and Linux. I write here about <em>programming</em>, <em>whitewater rescue</em>, books I'm chewing on, and whatever else I'm trying to think clearly about.
+      </p>
     </div>
-  </section>
-
-  <section class="recent-writing">
-    <h2>Recent Writing</h2>
-    <PostList posts={posts} />
-    <a href="/writing" class="view-all">all posts &rarr;</a>
-  </section>
+  </div>
 </Layout>
 
 <style>
-  .hero {
-    margin-bottom: 4rem;
-    padding-bottom: 2rem;
-    border-bottom: 1px solid var(--color-border);
+  .landing {
+    flex: 1;
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px 80px;
+    min-height: 0;
   }
-
-  h1 {
-    font-size: 2.5rem;
-    color: var(--color-heading);
-    margin: 0 0 0.5rem;
-    letter-spacing: -0.02em;
+  .landing-inner {
+    display: flex; flex-direction: column; align-items: center;
+    text-align: center;
+    max-width: 640px;
   }
-
-  .tagline {
-    font-size: 1.15rem;
-    color: var(--color-text-muted);
-    margin: 0 0 1.5rem;
-    line-height: 1.5;
+  .landing-portrait {
+    width: 96px; height: 96px;
+    border-radius: 50%;
+    margin-bottom: 32px;
+    background:
+      radial-gradient(ellipse at 35% 30%,
+        oklch(0.65 0.05 150) 0%,
+        oklch(0.50 0.07 150) 28%,
+        oklch(0.32 0.06 150) 55%,
+        oklch(0.20 0.04 150) 100%);
+    position: relative;
+    overflow: hidden;
   }
-
-  .social-links {
-    display: flex;
-    gap: 1.25rem;
+  .landing-portrait::before {
+    content: "";
+    position: absolute;
+    bottom: -8%; left: 50%;
+    width: 78%; height: 80%;
+    transform: translateX(-50%);
+    background:
+      radial-gradient(ellipse 22% 28% at 50% 22%, oklch(0.78 0.04 60) 0%, oklch(0.62 0.06 50) 50%, transparent 80%),
+      radial-gradient(ellipse 60% 50% at 50% 95%, oklch(0.18 0.02 150) 0%, oklch(0.18 0.02 150) 35%, transparent 70%);
   }
-
-  .social-links a {
-    font-family: var(--font-mono);
-    font-size: 0.85rem;
-    color: var(--color-accent-subtle);
-    text-decoration: none;
-    padding: 0.4rem 0.85rem;
-    border: 1px solid var(--color-border);
-    border-radius: 4px;
-    transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+  :global([data-theme="dark"]) .landing-portrait::before {
+    background:
+      radial-gradient(ellipse 22% 28% at 50% 22%, oklch(0.72 0.05 60) 0%, oklch(0.55 0.07 50) 50%, transparent 80%),
+      radial-gradient(ellipse 60% 50% at 50% 95%, oklch(0.10 0.02 150) 0%, oklch(0.10 0.02 150) 35%, transparent 70%);
   }
-
-  .social-links a:hover {
-    color: var(--color-accent);
-    border-color: var(--color-accent-subtle);
-    background: rgba(143, 169, 165, 0.08);
+  .landing-eyebrow {
+    margin-bottom: 14px;
+    letter-spacing: 0.18em !important;
   }
-
-  .recent-writing h2 {
-    font-family: var(--font-mono);
-    font-size: 0.85rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--color-text-subtle);
-    margin: 0 0 1.25rem;
+  .landing-name {
+    font-family: var(--f-display); font-weight: 600;
+    font-size: clamp(44px, 7vw, 64px);
+    line-height: 1; letter-spacing: -0.025em;
+    margin: 0 0 28px;
+    color: var(--ink);
   }
-
-  .view-all {
-    display: inline-block;
-    margin-top: 1.25rem;
-    font-family: var(--font-mono);
-    font-size: 0.85rem;
-    color: var(--color-accent-subtle);
+  .landing-bio {
+    font-size: 19px; color: var(--ink-2);
+    line-height: 1.65; margin: 0;
+    font-style: italic;
+    max-width: 56ch;
   }
-
-  .view-all:hover {
-    color: var(--color-accent);
-  }
+  .landing-bio em { font-style: normal; color: var(--ink); }
 
   @media (max-width: 600px) {
-    h1 {
-      font-size: 1.75rem;
-    }
-
-    .tagline {
-      font-size: 1rem;
-    }
-
-    .social-links {
-      flex-wrap: wrap;
-      gap: 0.75rem;
-    }
+    .landing { padding: 24px; }
+    .landing-bio { font-size: 17px; }
   }
 </style>

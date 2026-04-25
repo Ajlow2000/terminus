@@ -9,60 +9,36 @@ posts.forEach((post) => {
     tagCounts.set(tag, (tagCounts.get(tag) ?? 0) + 1);
   });
 });
-
 const tags = Array.from(tagCounts.entries()).sort((a, b) => b[1] - a[1]);
 ---
 
-<Layout title="tags — terminus">
-  <h1>tags</h1>
-  <ul>
-    {
-      tags.map(([tag, count]) => (
-        <li>
-          <a href={`/writing/tags/${tag}`}>#{tag}</a>
+<Layout title="Tags — Alec Lowry">
+  <div class="container tags-page">
+    <span class="eyebrow">Browse by</span>
+    <h1>Tags</h1>
+    <div class="tag-list">
+      {tags.map(([tag, count]) => (
+        <a class="tag-item" href={`/writing/tags/${tag}`}>
+          <span class="name">#{tag}</span>
           <span class="count">{count}</span>
-        </li>
-      ))
-    }
-  </ul>
+        </a>
+      ))}
+    </div>
+  </div>
 </Layout>
 
 <style>
-  h1 {
-    color: var(--color-heading);
-    margin: 0 0 2rem;
-  }
+  .tags-page { padding: 56px 0 80px; }
+  .tags-page h1 { font-size: 36px; margin: 12px 0 32px; }
 
-  ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  .tag-list { display: flex; flex-direction: column; gap: 0; }
+  .tag-item {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 12px 0; border-bottom: 1px solid var(--line-2);
+    text-decoration: none; color: var(--ink); transition: color 0.15s;
   }
-
-  li {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    padding: 0.5rem 0;
-    border-bottom: 1px solid var(--color-border);
-    gap: 1rem;
-  }
-
-  a {
-    color: var(--color-text);
-    text-decoration: none;
-    font-family: var(--font-mono);
-    font-size: 0.9rem;
-  }
-
-  a:hover {
-    color: var(--color-heading);
-    text-decoration: underline;
-  }
-
-  .count {
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    color: var(--color-text-subtle);
-  }
+  .tag-item:hover { color: var(--forest); }
+  .tag-item:hover .name { text-decoration: underline; }
+  .name { font-family: var(--f-mono); font-size: 15px; }
+  .count { font-family: var(--f-mono); font-size: 12px; color: var(--ink-3); }
 </style>

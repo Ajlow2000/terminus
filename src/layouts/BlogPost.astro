@@ -1,273 +1,335 @@
 ---
 import Layout from "./Layout.astro";
 import { toSlug, formatDate } from "../utils/format";
+import { getCollection } from "astro:content";
 
 interface Props {
   title: string;
   date: Date;
   description?: string;
   post?: any;
+  headings?: { depth: number; slug: string; text: string }[];
 }
 
-const { title, date, description, post } = Astro.props;
+const { title, date, description, post, headings = [] } = Astro.props;
 
 const seriesName = post?.data?.series?.name;
 const currentPart = post?.data?.series?.part;
 const seriesSlug = seriesName ? toSlug(seriesName) : null;
 
 const formatted = formatDate(date, "long");
+
+// Get series prev/next
+let prevPost: any = null;
+let nextPost: any = null;
+let seriesTotal = 0;
+if (seriesName) {
+  const allPosts = await getCollection("writing", ({ data }) => import.meta.env.PROD ? !data.draft : true);
+  const inSeries = allPosts
+    .filter((p) => p.data.series?.name === seriesName)
+    .sort((a, b) => a.data.series!.part - b.data.series!.part);
+  seriesTotal = inSeries.length;
+  const idx = inSeries.findIndex((p) => p.id === post?.id);
+  if (idx > 0) prevPost = inSeries[idx - 1];
+  if (idx >= 0 && idx < inSeries.length - 1) nextPost = inSeries[idx + 1];
+}
+
+const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 ---
 
-<Layout title={title} description={description} ogType="article">
-  <article>
-    <header>
-      <div class="title-row">
+<Layout title={`${title} — Alec Lowry`} description={description} ogType="article">
+  <div class="post-layout">
+    {tocHeadings.length > 0 && (
+      <aside class="toc" id="toc">
+        <h4>On this page</h4>
+        <ul>
+          {tocHeadings.map((h) => (
+            <li>
+              <a class={h.depth === 3 ? "h3-link" : ""} href={`#${h.slug}`} data-id={h.slug}>{h.text}</a>
+            </li>
+          ))}
+        </ul>
+        {seriesName && (
+          <div class="series-nav">
+            <span class="label">Series</span>
+            <a class="name" href={`/writing/series/${seriesSlug}`}>{seriesName}</a>
+            <span class="progress">part {currentPart} of {seriesTotal}</span>
+            <div class="links">
+              {prevPost ? (
+                <a href={`/writing/${prevPost.id.replace(/\.[^.]+$/, "")}`}>&larr; prev</a>
+              ) : <span />}
+              {nextPost ? (
+                <a href={`/writing/${nextPost.id.replace(/\.[^.]+$/, "")}`}>next &rarr;</a>
+              ) : <span />}
+            </div>
+          </div>
+        )}
+      </aside>
+    )}
+
+    <article class="post-article">
+      <header>
+        {seriesName ? (
+          <a class="eyebrow eyebrow-link" href={`/writing/series/${seriesSlug}`}>
+            {seriesName} &middot; part {currentPart}
+          </a>
+        ) : (
+          <span class="eyebrow">Essay</span>
+        )}
         <h1>{title}</h1>
-        <time datetime={date.toISOString()}>{formatted}</time>
+        <div class="meta">
+          <span class="mono">{formatted}</span>
+          {post?.data?.tags?.map((t: string) => (
+            <a class="tag tag-mono" href={`/writing?tag=${encodeURIComponent(t)}`}>{t}</a>
+          ))}
+        </div>
+      </header>
+
+      <div class="post-body">
+        <slot />
       </div>
-      {seriesName && (
-        <p class="series-link">
-          <a href={`/writing/series/${seriesSlug}`}>{seriesName}</a>
-          <span class="series-part">part {currentPart}</span>
-        </p>
-      )}
-      {description && <p class="description">{description}</p>}
-    </header>
-    <slot />
-  </article>
+    </article>
+  </div>
 </Layout>
 
 <style>
-  article {
-    max-width: var(--content-width-narrow);
+  .post-layout {
+    display: grid;
+    grid-template-columns: 200px minmax(0, 720px);
+    gap: 56px;
+    padding: 48px 32px 0;
+    max-width: 1080px;
     margin: 0 auto;
   }
-
-  .title-row {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 1rem;
-    margin-bottom: 0.25rem;
+  .post-article { min-width: 0; }
+  @media (max-width: 880px) {
+    .post-layout { grid-template-columns: 1fr; gap: 24px; padding: 32px 24px 0; }
+    .toc { display: none; }
+    .post-article { max-width: 720px; margin: 0 auto; width: 100%; }
+  }
+  @media (max-width: 480px) {
+    .post-layout { padding: 24px 18px 0; }
   }
 
-  h1 {
-    margin: 0;
-    font-size: 1.75rem;
-    color: var(--color-heading);
+  /* TOC */
+  .toc {
+    position: sticky; top: 80px; align-self: start;
+    font-family: var(--f-ui);
+    max-height: calc(100vh - 100px); overflow-y: auto;
+  }
+  .toc h4 {
+    font-family: var(--f-ui); font-size: 11px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.12em;
+    color: var(--ink-3); margin: 0 0 12px;
+  }
+  .toc ul {
+    list-style: none; padding: 0; margin: 0 0 24px;
+    display: flex; flex-direction: column; gap: 4px;
+    border-left: 1px solid var(--line);
+  }
+  .toc li { line-height: 1.4; }
+  .toc a {
+    display: block; padding: 4px 12px;
+    font-size: 13px; color: var(--ink-3);
+    text-decoration: none; margin-left: -1px;
+    border-left: 1.5px solid transparent;
+    transition: all 0.15s;
+  }
+  .toc a:hover { color: var(--ink); }
+  .toc a.active { color: var(--forest); border-left-color: var(--forest); }
+  .toc .h3-link { padding-left: 24px; font-size: 12px; }
+
+  /* Series nav in TOC */
+  .toc .series-nav {
+    border-top: 1px solid var(--line); padding-top: 16px;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .toc .series-nav .label {
+    font-family: var(--f-ui); font-size: 11px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-3);
+  }
+  .toc .series-nav .name {
+    font-size: 13px; color: var(--ink-2); text-decoration: none;
+    border-bottom: 1px solid var(--ink-4); align-self: flex-start;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .toc .series-nav a.name:hover { color: var(--forest); border-bottom-color: var(--forest); }
+  .toc .series-nav .progress { font-family: var(--f-mono); font-size: 11px; color: var(--ink-3); }
+  .toc .series-nav .links { display: flex; gap: 8px; margin-top: 4px; }
+  .toc .series-nav .links a {
+    padding: 4px 10px; border: 1px solid var(--line); border-radius: 4px;
+    font-size: 11px; flex: 1; text-align: center;
   }
 
-  time {
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    color: var(--color-text-muted);
-    white-space: nowrap;
+  /* Article header */
+  .post-article header { margin-bottom: 40px; }
+  .post-article .eyebrow { margin-bottom: 12px; display: block; }
+  .post-article .eyebrow-link {
+    color: var(--forest); text-decoration: none; transition: opacity 0.15s;
+  }
+  .post-article .eyebrow-link:hover { opacity: 0.7; }
+  .post-article h1 {
+    font-size: clamp(36px, 5vw, 52px);
+    margin: 0 0 16px; font-weight: 700; letter-spacing: -0.02em;
+  }
+  .post-article header .meta {
+    display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
+    padding-top: 12px; border-top: 1px solid var(--line);
   }
 
-  .description {
-    margin-top: 0.75rem;
-    color: var(--color-text-muted);
-    font-style: italic;
+  /* Post body */
+  .post-body {
+    font-family: var(--f-body); font-size: 18px;
+    line-height: 1.7; color: var(--ink); min-width: 0;
+  }
+  @media (max-width: 480px) {
+    .post-body { font-size: 17px; }
+    .post-article h1 { font-size: 32px !important; }
+    .post-body :global(h2) { font-size: 24px; }
+    .post-body :global(h3) { font-size: 20px; }
+  }
+  .post-body :global(> *) { margin: 0 0 1.4em; }
+  .post-body :global(h2) {
+    font-size: 30px; margin: 1.8em 0 0.6em; scroll-margin-top: 80px;
+  }
+  .post-body :global(h3) {
+    font-size: 22px; margin: 1.6em 0 0.5em; scroll-margin-top: 80px;
+  }
+  .post-body :global(p) { color: var(--ink-2); }
+  .post-body :global(strong) { color: var(--ink); font-weight: 600; }
+  .post-body :global(em) { font-style: italic; }
+  .post-body :global(code:not(pre code)) {
+    font-family: var(--f-mono); font-size: 0.86em;
+    background: var(--bg-3); padding: 1px 6px; border-radius: 4px; color: var(--ink);
+  }
+  .post-body :global(blockquote) {
+    margin: 1.5em 0; padding: 0 0 0 24px;
+    border-left: 3px solid var(--forest); color: var(--ink-2); font-style: italic;
+  }
+  .post-body :global(sup a) {
+    text-decoration: none; font-family: var(--f-ui);
+    font-size: 0.7em; vertical-align: super; padding: 0 2px;
+  }
+  .post-body :global(ol), .post-body :global(ul) {
+    color: var(--ink-2); padding-left: 1.5em;
+  }
+  .post-body :global(li) { margin-bottom: 0.3em; }
+
+  /* Code blocks (Shiki) */
+  .post-body :global(pre) {
+    margin: 1.5em 0; padding: 16px 18px; overflow-x: auto;
+    font-family: var(--f-mono); font-size: 13px; line-height: 1.55;
+    border-radius: 8px; border: 1px solid var(--code-line);
+    background: var(--code-bg);
+  }
+  .post-body :global(pre code) {
+    font-family: inherit; background: transparent; padding: 0;
+  }
+  .post-body :global(.code-with-filename) {
+    border-radius: 8px; overflow: hidden;
+    border: 1px solid var(--code-line); margin: 1.5em 0;
+  }
+  .post-body :global(.code-filename) {
+    background: var(--bg-2); color: var(--ink-3);
+    font-family: var(--f-mono); font-size: 11px;
+    padding: 8px 14px; border-bottom: 1px solid var(--code-line);
+    letter-spacing: 0.05em;
+  }
+  .post-body :global(.code-with-filename pre) {
+    border-radius: 0; margin: 0; border: none;
   }
 
-  header {
-    margin-bottom: 2.5rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid var(--color-border);
+  /* Tables */
+  .post-body :global(table) {
+    border-collapse: collapse; display: block; overflow-x: auto;
+    max-width: 100%; margin: 1.5rem 0; font-size: 0.9rem;
+  }
+  .post-body :global(th) {
+    text-align: left; padding: 0.5rem 0.75rem;
+    border-bottom: 2px solid var(--line); color: var(--ink);
+  }
+  .post-body :global(td) {
+    padding: 0.4rem 0.75rem; border-bottom: 1px solid var(--line-2);
   }
 
-  article :global(h2) {
-    color: var(--color-heading-sub);
-    margin-top: 2rem;
+  /* Typst support */
+  .post-body :global(.sr-only) {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
   }
-
-  article :global(p) {
-    margin: 1rem 0;
+  .post-body :global(figure.typst-figure) {
+    margin: 1.5rem 0; text-align: center;
   }
-
-  article :global(code) {
-    font-family: var(--font-mono);
-    background: var(--color-surface);
-    padding: 0.1em 0.3em;
-    border-radius: 3px;
-    font-size: 0.875em;
+  .post-body :global(figure.typst-figure figcaption) {
+    font-size: 0.85rem; color: var(--ink-3); margin-top: 0.5rem;
   }
-
-  article :global(pre) {
-    background: var(--color-surface);
-    font-size: 0.875em;
-    padding: 1rem;
-    border-radius: 4px;
-    overflow-x: auto;
+  .post-body :global(span.typst-math-inline) {
+    display: inline-block; vertical-align: middle; line-height: 1;
   }
-
-  article :global(pre code) {
-    background: transparent;
-    padding: 0;
-    border-radius: 0;
-    font-size: inherit;
+  .post-body :global(span.typst-math-inline svg) {
+    height: 1rem; width: auto; overflow: visible;
   }
-
-  article :global(.code-with-filename) {
-    border-radius: 4px;
-    overflow: hidden;
+  .post-body :global(span.typst-math-block) {
+    display: block; text-align: center; margin: 1.5rem 0;
   }
-
-  article :global(.code-filename) {
-    background: var(--color-surface);
-    color: var(--color-text-muted);
-    font-family: var(--font-mono);
-    font-size: 0.75em;
-    padding: 0.35em 1rem;
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  article :global(.code-with-filename pre) {
-    border-radius: 0;
-    margin: 0;
-  }
-
-  article :global(.sr-only) {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-  }
-
-  article :global(figure.typst-figure) {
-    margin: 1.5rem 0;
-    text-align: center;
-  }
-
-  article :global(figure.typst-figure figcaption) {
-    font-size: 0.85rem;
-    color: var(--color-text-muted);
-    margin-top: 0.5rem;
-  }
-
-  article :global(span.typst-math-inline) {
-    display: inline-block;
-    vertical-align: middle;
-    line-height: 1;
-  }
-
-  article :global(span.typst-math-inline svg) {
-    height: var(--font-size-body);
-    width: auto;
-    overflow: visible;
-  }
-
-  article :global(span.typst-math-block) {
-    display: block;
-    text-align: center;
-    margin: 1.5rem 0;
-  }
-
-  article :global(figure.typst-figure table) {
-    margin: 0;
-  }
-
-  article :global(table) {
-    border-collapse: collapse;
-    display: block;
-    overflow-x: auto;
-    max-width: 100%;
-    margin: 1.5rem 0;
-    font-size: 0.9rem;
-  }
-
-  article :global(th) {
-    text-align: left;
-    padding: 0.5rem 0.75rem;
-    border-bottom: 2px solid var(--color-border);
-    color: var(--color-heading-sub);
-  }
-
-  article :global(td) {
-    padding: 0.4rem 0.75rem;
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  article :global(tr:last-child td) {
-    border-bottom: none;
-  }
-
-  .series-link {
-    margin: 0 0 0.5rem;
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    display: flex;
-    align-items: baseline;
-    gap: 0.75rem;
-  }
-
-  .series-link a {
-    color: var(--color-accent-subtle);
-    text-decoration: none;
-  }
-
-  .series-link a:hover {
-    color: var(--color-accent);
-    text-decoration: underline;
-  }
-
-  .series-part {
-    color: var(--color-text-subtle);
-  }
-
-  @media (max-width: 600px) {
-    h1 {
-      font-size: 1.35rem;
-    }
-
-    .title-row {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.25rem;
-    }
-  }
+  .post-body :global(figure.typst-figure table) { margin: 0; }
 </style>
 
 <script>
-  // Typst's HTML export puts html.frame() content in its own <p> even for
-  // inline math. Merge those isolated math paragraphs back into surrounding text.
+  // Scroll-spy for TOC
+  const tocLinks = document.querySelectorAll<HTMLAnchorElement>(".toc a[data-id]");
+  if (tocLinks.length > 0) {
+    const ids = Array.from(tocLinks).map(a => a.dataset.id!);
+    const onScroll = () => {
+      const offset = 120;
+      let current = ids[0];
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top - offset <= 0) current = id;
+      }
+      tocLinks.forEach(a => {
+        a.classList.toggle("active", a.dataset.id === current);
+      });
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    // Smooth scroll on click
+    tocLinks.forEach(a => {
+      a.addEventListener("click", (e) => {
+        e.preventDefault();
+        const el = document.getElementById(a.dataset.id!);
+        if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 72, behavior: "smooth" });
+      });
+    });
+  }
+
+  // Typst inline math merge (from original)
   document.querySelectorAll('article span.typst-math-inline').forEach(mathSpan => {
     const mathP = mathSpan.parentElement;
     if (!mathP || mathP.tagName !== 'P') return;
-
     const isIsolated = [...mathP.childNodes].every(
-      node => node === mathSpan || (node.nodeType === 3 && node.textContent.trim() === '')
+      node => node === mathSpan || (node.nodeType === 3 && node.textContent!.trim() === '')
     );
     if (!isIsolated) return;
-
     const prevP = mathP.previousElementSibling;
     if (prevP?.tagName !== 'P') return;
-
     const nextP = mathP.nextElementSibling;
     prevP.appendChild(mathSpan);
     mathP.remove();
-
     if (nextP?.tagName === 'P') {
       while (nextP.firstChild) prevP.appendChild(nextP.firstChild);
       nextP.remove();
     }
   });
 
-  // Convert img.typst-frame inside inline math to inline SVG so
-  // overflow: visible works and tall glyphs (∫, ∑, …) aren't clipped.
+  // Typst SVG conversion
   document.querySelectorAll('article span.typst-math-inline img.typst-frame').forEach(img => {
-    const src = img.getAttribute('src') ?? '';
+    const src = (img as HTMLImageElement).getAttribute('src') ?? '';
     if (!src.startsWith('data:image/svg+xml;base64,')) return;
-
     const svgText = atob(src.slice('data:image/svg+xml;base64,'.length));
     const doc = new DOMParser().parseFromString(svgText, 'image/svg+xml');
     const svg = doc.documentElement;
-
     img.replaceWith(svg);
   });
 </script>
