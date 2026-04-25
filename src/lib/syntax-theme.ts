@@ -4,13 +4,12 @@ import type { ThemeRegistrationRaw } from "shiki";
 export const syntaxThemeLight: ThemeRegistrationRaw = {
   name: "terminus-light",
   type: "light",
-  settings: [],
   colors: {
     "editor.background": "#ece2c5",
     "editor.foreground": "#524a37",
     "editorLineNumber.foreground": "#a89e80",
   },
-  tokenColors: [
+  settings: [
     {
       scope: ["comment", "punctuation.definition.comment"],
       settings: { foreground: "#7e745b", fontStyle: "italic" },
@@ -58,13 +57,12 @@ export const syntaxThemeLight: ThemeRegistrationRaw = {
 export const syntaxThemeDark: ThemeRegistrationRaw = {
   name: "terminus-dark",
   type: "dark",
-  settings: [],
   colors: {
     "editor.background": "#2F3D2B",
     "editor.foreground": "#CDD6C7",
     "editorLineNumber.foreground": "#526648",
   },
-  tokenColors: [
+  settings: [
     {
       scope: ["comment", "punctuation.definition.comment"],
       settings: { foreground: "#7A8971", fontStyle: "italic" },

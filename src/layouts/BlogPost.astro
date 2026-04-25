@@ -227,6 +227,9 @@ const hasToc = tocHeadings.length > 0;
     border-radius: 8px; border: 1px solid var(--code-line);
     background: var(--code-bg);
   }
+  .post-body :global(.codeblock pre) {
+    margin: 0; border: none; border-radius: 0;
+  }
   .post-body :global(pre code) {
     font-family: inherit; background: transparent; padding: 0;
   }
@@ -240,14 +243,17 @@ const hasToc = tocHeadings.length > 0;
     padding: 8px 14px; border-bottom: 1px solid var(--code-line);
     letter-spacing: 0.05em;
   }
+  .post-body :global(.code-filename.codeblock-bar) {
+    display: flex; justify-content: space-between; align-items: center;
+  }
   .post-body :global(.code-with-filename pre) {
     border-radius: 0; margin: 0; border: none;
   }
 
   /* Tables */
   .post-body :global(table) {
-    border-collapse: collapse; display: block; overflow-x: auto;
-    max-width: 100%; margin: 1.5rem 0; font-size: 0.9rem;
+    border-collapse: collapse; overflow-x: auto;
+    width: max-content; max-width: 100%; margin: 1.5rem auto; font-size: 0.9rem;
   }
   .post-body :global(th) {
     text-align: left; padding: 0.5rem 0.75rem;
@@ -277,7 +283,7 @@ const hasToc = tocHeadings.length > 0;
   .post-body :global(span.typst-math-block) {
     display: block; text-align: center; margin: 1.5rem 0;
   }
-  .post-body :global(figure.typst-figure table) { margin: 0; }
+  .post-body :global(figure.typst-figure table) { margin: 0 auto; width: max-content; max-width: 100%; }
 </style>
 
 <script>
@@ -336,5 +342,58 @@ const hasToc = tocHeadings.length > 0;
     const doc = new DOMParser().parseFromString(svgText, 'image/svg+xml');
     const svg = doc.documentElement;
     img.replaceWith(svg);
+  });
+
+  // Code block copy buttons
+  const iconCopy = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg>`;
+  const iconCopied = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg>`;
+
+  function makeCopyBtn(pre: HTMLPreElement): HTMLButtonElement {
+    const btn = document.createElement("button");
+    btn.className = "copy-btn";
+    btn.innerHTML = `${iconCopy} Copy`;
+    btn.addEventListener("click", async () => {
+      const code = pre.querySelector("code")?.textContent ?? pre.textContent ?? "";
+      try { await navigator.clipboard.writeText(code); }
+      catch {
+        const ta = document.createElement("textarea");
+        ta.value = code; document.body.appendChild(ta);
+        ta.select(); document.execCommand("copy"); document.body.removeChild(ta);
+      }
+      btn.innerHTML = `${iconCopied} Copied`;
+      btn.classList.add("copied");
+      setTimeout(() => { btn.innerHTML = `${iconCopy} Copy`; btn.classList.remove("copied"); }, 1600);
+    });
+    return btn;
+  }
+
+  document.querySelectorAll<HTMLPreElement>(".post-body pre").forEach(pre => {
+    // Skip if already inside a .codeblock wrapper
+    if (pre.closest(".codeblock")) return;
+
+    const lang = pre.getAttribute("data-language") ?? "";
+
+    // Handle .code-with-filename blocks — add copy btn to existing bar
+    const filenameWrapper = pre.closest(".code-with-filename");
+    if (filenameWrapper) {
+      const bar = filenameWrapper.querySelector(".code-filename");
+      if (bar) {
+        bar.classList.add("codeblock-bar");
+        bar.appendChild(makeCopyBtn(pre));
+      }
+      filenameWrapper.classList.add("codeblock");
+      return;
+    }
+
+    // Wrap bare <pre> in .codeblock
+    const wrapper = document.createElement("div");
+    wrapper.className = "codeblock";
+    const bar = document.createElement("div");
+    bar.className = "codeblock-bar";
+    bar.innerHTML = `<span class="lang">${lang}</span>`;
+    bar.appendChild(makeCopyBtn(pre));
+    pre.parentNode!.insertBefore(wrapper, pre);
+    wrapper.appendChild(bar);
+    wrapper.appendChild(pre);
   });
 </script>
