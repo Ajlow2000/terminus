@@ -155,10 +155,10 @@ const hasToc = tocHeadings.length > 0;
   }
   .toc .series-nav .name {
     font-size: 13px; color: var(--ink-2); text-decoration: none;
-    border-bottom: 1px solid var(--ink-4); align-self: flex-start;
-    transition: color 0.15s, border-color 0.15s;
+    border-bottom: none; align-self: flex-start;
+    transition: color 0.15s;
   }
-  .toc .series-nav a.name:hover { color: var(--forest); border-bottom-color: var(--forest); }
+  .toc .series-nav a.name:hover { color: var(--forest); }
   .toc .series-nav .progress { font-family: var(--f-mono); font-size: 11px; color: var(--ink-3); }
   .toc .series-nav .links { display: flex; gap: 8px; margin-top: 4px; }
   .toc .series-nav .links a {

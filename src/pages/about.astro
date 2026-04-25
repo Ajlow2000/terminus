@@ -1,28 +1,53 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import ExperienceContent from "../content/experience.typ";
 ---
 
 <Layout title="About — Alec Lowry">
   <div class="container about-page">
-    <span class="eyebrow">About</span>
-    <h1>The short version.</h1>
-    <div class="body">
-      <p>I'm a software engineer. I work on secure workload identity and the boring-but-load-bearing parts of Linux that most people would rather not think about.</p>
-      <p>Outside of that, I paddle whitewater (badly enough to be careful, well enough to lead trips), read more than I retain, and write here when something I learned felt expensive enough to be worth the trouble of writing down.</p>
-      <p>I'm based in the Midwest. The best way to reach me is <a href="mailto:alowry2000@gmail.com">email</a>; I'm slow but reliable.</p>
-    </div>
+    <article class="experience">
+      <ExperienceContent />
+    </article>
   </div>
 </Layout>
 
 <style>
   .about-page { padding: 56px 0 80px; }
-  .about-page h1 {
-    font-size: 44px; margin: 12px 0 24px;
-    letter-spacing: -0.02em;
+  .experience {
+    font-size: 17px;
   }
-  .body {
-    font-size: 18px; color: var(--ink-2);
-    line-height: 1.7; max-width: 60ch;
+
+  .experience :global(h1) {
+    font-family: var(--f-ui);
+    font-size: 11px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.12em;
+    color: var(--forest);
+    margin: 2.5rem 0 1rem;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 0.4rem;
   }
-  .body p { margin: 0 0 1em; }
+  .experience :global(h1:first-child) { margin-top: 0; }
+
+  .experience :global(.entry) { margin-bottom: 1.5rem; }
+  .experience :global(.entry-header) {
+    display: flex; justify-content: space-between;
+    align-items: baseline; gap: 1rem;
+  }
+  .experience :global(.entry-title) { font-weight: 700; color: var(--ink); }
+  .experience :global(.entry-title a) { color: var(--ink); text-decoration: none; }
+  .experience :global(.entry-title a:hover) { color: var(--forest); text-decoration: underline; }
+  .experience :global(.entry-date) {
+    color: var(--ink-3); font-size: 0.8rem;
+    white-space: nowrap; flex-shrink: 0;
+  }
+  .experience :global(.entry-meta) { color: var(--ink-3); font-size: 0.8rem; margin: 0.2rem 0 0.5rem; }
+  .experience :global(.entry-courses) { color: var(--ink-3); font-size: 0.8rem; margin-top: 0.4rem; }
+
+  .experience :global(ul) { margin: 0.4rem 0 0; padding-left: 1.4rem; color: var(--ink-2); }
+  .experience :global(li) { margin-bottom: 0.25rem; line-height: 1.5; }
+
+  .experience :global(.skills) { margin: 0; padding: 0; }
+  .experience :global(.skill-row) { display: flex; gap: 0.75rem; margin-bottom: 0.4rem; align-items: baseline; }
+  .experience :global(.skill-row dt) { color: var(--ink-3); font-size: 0.8rem; min-width: 6rem; flex-shrink: 0; }
+  .experience :global(.skill-row dd) { margin: 0; color: var(--ink-2); }
 </style>
