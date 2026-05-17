@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" role="img" aria-label="alec lowry">
+  <title>alec lowry — Terminal</title>
+  <!-- Chevron prompt -->
+  <path d="M 14 22 L 36 40 L 14 58"
+        fill="none"
+        stroke="#2c5e44"
+        stroke-width="5.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+  <!-- Underscore baseline (subtle terminal cursor cue) -->
+  <line x1="14" y1="68" x2="40" y2="68"
+        stroke="#2c5e44" stroke-width="3" stroke-linecap="round" opacity="0.5"/>
+  <!-- Wordmark -->
+  <text x="58" y="52"
+        font-family="Newsreader, Georgia, 'Times New Roman', serif"
+        font-size="32"
+        font-weight="600"
+        letter-spacing="-0.6"
+        fill="#1f1a12">alec lowry</text>
+</svg>
