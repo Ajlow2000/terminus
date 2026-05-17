@@ -2,21 +2,13 @@
 import Layout from "../layouts/Layout.astro";
 
 const likes = [
-  { cat: "Editor",     pick: "Helix",                       why: "Modal, post-vim, and it ships with sensible defaults." },
-  { cat: "Terminal",   pick: "Ghostty",                     why: "Fast, native, and the config language doesn't fight me." },
-  { cat: "Shell",      pick: "fish",                        why: "Autocomplete that's good enough I stopped caring about plugins." },
-  { cat: "Window mgr", pick: "Sway on Wayland",             why: "i3 muscle memory, fewer surprises about screen tearing." },
-  { cat: "Distro",     pick: "Arch + dwm at home, Ubuntu LTS at work", why: "Right tool, right wear pattern." },
-  { cat: "Notes",      pick: "Plain markdown in a git repo",         why: "Outlives every notes app I've tried." },
-  { cat: "Mail",       pick: "aerc",                        why: "TUI mail that respects threading and patches." },
-  { cat: "Browser",    pick: "Firefox",                     why: "Containers + tree-style tabs is still unbeaten." },
-  { cat: "Boat",       pick: "Dagger Mamba 8.6",            why: "Forgiving creeker with enough volume for my weight class." },
-  { cat: "Paddle",     pick: "Werner Powerhouse",           why: "Stiff blade, decent feathered offset, holds up to rocks." },
-  { cat: "PFD",        pick: "Astral Greenjacket",          why: "Rescue PFD I don't notice until I need to notice it." },
-  { cat: "Coffee",     pick: "Aeropress + Lance Hedrick recipes", why: "One device, two thousand opinions about it." },
-  { cat: "Camera",     pick: "Ricoh GR IIIx",               why: "Pocket-sized, snap-focus, no ceremony." },
-  { cat: "Pen",        pick: "Pilot Kakuno EF",             why: "Cheap, smiley, the only fountain pen I haven't lost." },
-  { cat: "Notebook",   pick: "Field Notes Expedition",      why: "Waterproof, fits a kayak deck pocket, survives sweat." },
+    // { cat: "",         pick: "",       since: "", why: "" },
+    { cat: "Fiction Book",        pick: "The Foundation: Isaac Asimov",       since: "2016", why: "I am such a fan of sci-fi books that have expansive world building. I really enjoy how the story of the Foundation is told over the course of hundreds of years." },
+    { cat: "Note System",         pick: "Plain markdown in a git repo",       since: "2018", why: "I enjoy having digital notes for searchability and backups. Also, my brain naturally stores information as a DAG which maps nicely to directories and files. All the extra stuff provided by tools like obsidian get in my way." },
+    { cat: "Operating System",    pick: "NixOS",                              since: "2021", why: "I find Nix's declarative model to provisioning far easier to maintain then an ansible playbook for my computers" },
+    { cat: "Desktop Environment", pick: "Cosmic DE",                          since: "2024", why: "I used tiling wm's before this. But I got tired of setting up applets for things like dynamic multimonitor selection and bluetooth. Cosmic just works for me (and the tiling meets my needs)." },
+    { cat: "Shell",               pick: "Zsh",                                since: "2019", why: "Literally the only reason I like zsh is because I like the syntax for customizing the right hand side of my prompt better then bash." },
+    { cat: "Text Editor",         pick: "Neovim + Tmux",                      since: "2019", why: "I just like modal text editing. Neovim was the default choice for this at the time and I've never felt the need to switch since." },
 ];
 ---
 
@@ -24,44 +16,246 @@ const likes = [
   <div class="container likes-page">
     <header>
       <h1>Stuff I like</h1>
-      <p class="lede">Tools, gear, and small habits I've kept long enough to recommend without hedging too much. Updated when something earns its place — or loses it.</p>
-      <p class="mono muted" style="margin-top: 12px;">Last updated &middot; April 2025</p>
+      <p class="lede">
+      A quick collection of things I like.
+      I'm not very evangelical about any of this, but it's a fun list to compile and look back through.
+      </p>
+      <p class="mono muted" style="margin-top: 12px;">Last updated &middot; May 2026</p>
     </header>
-    <div class="likes-list">
-      {likes.map((l) => (
-        <div class="like-row">
-          <span class="cat">{l.cat}</span>
-          <span class="pick">{l.pick}</span>
-          <span class="why">{l.why}</span>
-        </div>
-      ))}
+
+    <div class="carousel" id="likes-carousel" aria-roledescription="carousel" aria-label="Things I like">
+      <button class="carousel-nav prev" id="carousel-prev" aria-label="Previous">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+
+      <div class="carousel-track" id="carousel-track">
+        {likes.map((l, i) => (
+          <article class="like-card" aria-roledescription="slide" aria-label={`${i + 1} of ${likes.length}`}>
+            <span class="cat">{l.cat}</span>
+            <h2 class="pick">{l.pick}</h2>
+            <p class="why">{l.why}</p>
+            <p class="since">Used since &middot; {l.since}</p>
+          </article>
+        ))}
+      </div>
+
+      <button class="carousel-nav next" id="carousel-next" aria-label="Next">
+        <span class="next-progress" id="next-progress" aria-hidden="true"></span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+
+      <div class="carousel-dots" id="carousel-dots" role="tablist" aria-label="Select slide">
+        {likes.map((_, i) => (
+          <button class="dot" data-i={i} role="tab" aria-label={`Go to slide ${i + 1}`}></button>
+        ))}
+      </div>
     </div>
   </div>
 </Layout>
 
 <style>
-  .likes-page { padding-top: 56px; padding-bottom: 24px; }
-  .likes-page header { margin-bottom: 40px; }
+  .likes-page { padding-top: 56px; padding-bottom: 48px; }
+  .likes-page header { margin-bottom: 40px; text-align: center; }
   .likes-page h1 { font-size: clamp(36px, 6vw, 56px); margin: 0 0 12px; font-weight: 700; }
-  .lede { font-size: 18px; color: var(--ink-2); max-width: 52ch; margin: 0; }
-  .likes-list { display: flex; flex-direction: column; }
+  .lede { font-size: 18px; color: var(--ink-2); max-width: 52ch; margin: 0 auto; }
 
-  .like-row {
+  /* ── Carousel ─────────────────────────────────────── */
+  .carousel {
+    position: relative;
     display: grid;
-    grid-template-columns: 180px 1fr 2fr;
-    gap: 32px; padding: 18px 0;
-    border-bottom: 1px solid var(--line-2);
-    align-items: baseline;
+    grid-template-columns: 44px 1fr 44px;
+    grid-template-areas:
+      "prev track next"
+      ".    dots  .";
+    align-items: center;
+    gap: 16px 12px;
+    margin-top: 24px;
   }
-  @media (max-width: 700px) {
-    .like-row { grid-template-columns: 1fr; gap: 4px; padding: 16px 0; }
+
+  .carousel-track {
+    grid-area: track;
+    display: flex;
+    gap: 24px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    padding: 8px 4px 16px;
   }
-  .like-row .cat {
+  .carousel-track::-webkit-scrollbar { display: none; }
+
+  .like-card {
+    flex: 0 0 100%;
+    scroll-snap-align: center;
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 40px 36px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-height: 240px;
+  }
+  .like-card .cat {
     font-family: var(--f-ui); font-size: 11px; font-weight: 600;
     text-transform: uppercase; letter-spacing: 0.12em; color: var(--forest);
   }
-  .like-row .pick {
-    font-family: var(--f-display); font-weight: 600; font-size: 19px; color: var(--ink);
+  .like-card .pick {
+    font-family: var(--f-display); font-weight: 600;
+    font-size: clamp(28px, 4vw, 40px);
+    line-height: 1.15; letter-spacing: -0.02em;
+    margin: 0; color: var(--ink);
   }
-  .like-row .why { color: var(--ink-2); font-size: 16px; font-style: italic; }
+  .like-card .why {
+    color: var(--ink-2); font-size: 18px;
+    font-style: italic; margin: 0; line-height: 1.55;
+  }
+  .like-card .since {
+    font-family: var(--f-mono); font-size: 12px;
+    color: var(--ink-3); margin: auto 0 0;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── Arrow buttons ────────────────────────────────── */
+  .carousel-nav {
+    width: 44px; height: 44px; border-radius: 22px;
+    background: var(--bg-2); border: 1px solid var(--line);
+    color: var(--ink-2); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: color 0.15s, border-color 0.15s;
+    position: relative;
+    overflow: hidden;
+  }
+  .carousel-nav:hover { color: var(--forest); border-color: var(--forest); }
+  .carousel-nav.prev { grid-area: prev; }
+  .carousel-nav.next { grid-area: next; }
+  .carousel-nav svg { position: relative; z-index: 1; }
+
+  .next-progress {
+    position: absolute; inset: 0;
+    background: var(--forest-2);
+    transform: scaleX(0);
+    transform-origin: left center;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* ── Dots ─────────────────────────────────────────── */
+  .carousel-dots {
+    grid-area: dots;
+    display: flex; justify-content: center; gap: 8px;
+    flex-wrap: wrap;
+  }
+  .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--line); border: none; padding: 0; cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .dot:hover { background: var(--ink-3); }
+  .dot.active { background: var(--forest); transform: scale(1.3); }
+
+  @media (max-width: 600px) {
+    .carousel { grid-template-columns: 36px 1fr 36px; gap: 12px 8px; }
+    .carousel-nav { width: 36px; height: 36px; }
+    .like-card { padding: 28px 22px; min-height: 200px; }
+    .like-card .why { font-size: 16px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .carousel-track { scroll-behavior: auto; }
+    .dot { transition: none; }
+  }
 </style>
+
+<script>
+  const track = document.getElementById("carousel-track");
+  const prev = document.getElementById("carousel-prev");
+  const next = document.getElementById("carousel-next");
+  const dotsWrap = document.getElementById("carousel-dots");
+  const progressEl = document.getElementById("next-progress");
+
+  if (track && prev && next && dotsWrap) {
+    const cards = Array.from(track.querySelectorAll<HTMLElement>(".like-card"));
+    const dots = Array.from(dotsWrap.querySelectorAll<HTMLButtonElement>(".dot"));
+    let index = 0;
+    let timer: number | null = null;
+    let progressAnim: Animation | null = null;
+    const INTERVAL = 5000;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    function scrollToIndex(i: number) {
+      const card = cards[i];
+      if (!card || !track) return;
+      const left = card.offsetLeft - (track.clientWidth - card.clientWidth) / 2;
+      track.scrollTo({ left, behavior: reducedMotion ? "auto" : "smooth" });
+    }
+
+    function setIndex(i: number) {
+      index = ((i % cards.length) + cards.length) % cards.length;
+      scrollToIndex(index);
+      dots.forEach((d, di) => d.classList.toggle("active", di === index));
+    }
+
+    function startProgress() {
+      if (!progressEl || reducedMotion) return;
+      progressAnim?.cancel();
+      progressAnim = progressEl.animate(
+        [{ transform: "scaleX(0)" }, { transform: "scaleX(1)" }],
+        { duration: INTERVAL, easing: "linear", fill: "forwards" },
+      );
+    }
+    function stopProgress() {
+      progressAnim?.cancel();
+      progressAnim = null;
+    }
+
+    function startAuto() {
+      stopAuto();
+      timer = window.setInterval(() => {
+        setIndex(index + 1);
+        startProgress();
+      }, INTERVAL);
+      startProgress();
+    }
+    function stopAuto() {
+      if (timer !== null) { clearInterval(timer); timer = null; }
+      stopProgress();
+    }
+    function resetAuto() { startAuto(); }
+
+    prev.addEventListener("click", () => { setIndex(index - 1); resetAuto(); });
+    next.addEventListener("click", () => { setIndex(index + 1); resetAuto(); });
+    dots.forEach((d, i) => d.addEventListener("click", () => { setIndex(i); resetAuto(); }));
+
+    const carousel = document.getElementById("likes-carousel");
+    carousel?.addEventListener("mouseenter", stopAuto);
+    carousel?.addEventListener("mouseleave", startAuto);
+    carousel?.addEventListener("focusin", stopAuto);
+    carousel?.addEventListener("focusout", startAuto);
+
+    // Keep dots in sync if the user scrolls manually (touch / trackpad)
+    let scrollDebounce: number | null = null;
+    track.addEventListener("scroll", () => {
+      if (scrollDebounce !== null) window.clearTimeout(scrollDebounce);
+      scrollDebounce = window.setTimeout(() => {
+        const center = track.scrollLeft + track.clientWidth / 2;
+        let closest = 0;
+        let best = Infinity;
+        cards.forEach((c, i) => {
+          const mid = c.offsetLeft + c.clientWidth / 2;
+          const dist = Math.abs(center - mid);
+          if (dist < best) { best = dist; closest = i; }
+        });
+        if (closest !== index) {
+          index = closest;
+          dots.forEach((d, di) => d.classList.toggle("active", di === index));
+        }
+      }, 120);
+    });
+
+    // Init
+    setIndex(0);
+    if (!reducedMotion) startAuto();
+  }
+</script>
