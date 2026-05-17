@@ -229,17 +229,23 @@ const likes = [
     dots.forEach((d, i) => d.addEventListener("click", () => { setIndex(i); resetAuto(); }));
 
     const carousel = document.getElementById("likes-carousel");
-    carousel?.addEventListener("mouseenter", stopAuto);
-    carousel?.addEventListener("mouseleave", startAuto);
+    carousel?.addEventListener("pointerenter", (e) => {
+      if ((e as PointerEvent).pointerType === "mouse") stopAuto();
+    });
+    carousel?.addEventListener("pointerleave", (e) => {
+      if ((e as PointerEvent).pointerType === "mouse") startAuto();
+    });
     carousel?.addEventListener("focusin", stopAuto);
     carousel?.addEventListener("focusout", startAuto);
 
-    // Any direct user input on the track resets the auto-advance timer.
-    // Programmatic scrollTo from our own code does NOT fire these events,
-    // so this is safe to wire directly.
+    // Reset the auto-advance timer when the user's interaction ends
+    // (finger lifts off, mouse drag releases, wheel tick). Programmatic
+    // scrollTo from our own code does NOT fire these, so it's safe.
     const onUserInteract = () => resetAuto();
-    track.addEventListener("pointerdown", onUserInteract);
-    track.addEventListener("touchstart", onUserInteract, { passive: true });
+    track.addEventListener("pointerup", onUserInteract);
+    track.addEventListener("pointercancel", onUserInteract);
+    track.addEventListener("touchend", onUserInteract, { passive: true });
+    track.addEventListener("touchcancel", onUserInteract, { passive: true });
     track.addEventListener("wheel", onUserInteract, { passive: true });
 
     // Keep dots in sync if the user scrolls manually (touch / trackpad)
