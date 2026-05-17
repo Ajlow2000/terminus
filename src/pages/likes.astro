@@ -234,13 +234,13 @@ const likes = [
     carousel?.addEventListener("focusin", stopAuto);
     carousel?.addEventListener("focusout", startAuto);
 
-    // Track whether the next scroll event was initiated by the user
-    // (touch swipe / trackpad / wheel) vs. our own programmatic scrollTo.
-    let userScrolling = false;
-    const markUserScroll = () => { userScrolling = true; };
-    track.addEventListener("pointerdown", markUserScroll);
-    track.addEventListener("touchstart", markUserScroll, { passive: true });
-    track.addEventListener("wheel", markUserScroll, { passive: true });
+    // Any direct user input on the track resets the auto-advance timer.
+    // Programmatic scrollTo from our own code does NOT fire these events,
+    // so this is safe to wire directly.
+    const onUserInteract = () => resetAuto();
+    track.addEventListener("pointerdown", onUserInteract);
+    track.addEventListener("touchstart", onUserInteract, { passive: true });
+    track.addEventListener("wheel", onUserInteract, { passive: true });
 
     // Keep dots in sync if the user scrolls manually (touch / trackpad)
     let scrollDebounce: number | null = null;
@@ -255,12 +255,9 @@ const likes = [
           const dist = Math.abs(center - mid);
           if (dist < best) { best = dist; closest = i; }
         });
-        const wasUser = userScrolling;
-        userScrolling = false;
         if (closest !== index) {
           index = closest;
           dots.forEach((d, di) => d.classList.toggle("active", di === index));
-          if (wasUser) resetAuto();
         }
       }, 120);
     });
