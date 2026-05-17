@@ -39,7 +39,6 @@ const currentPath = Astro.url.pathname;
           <div class="nav-links">
             <a class:list={["nav-link", { active: currentPath.startsWith("/writing") }]} href="/writing">writing</a>
             <a class:list={["nav-link", { active: currentPath === "/likes" || currentPath === "/likes/" }]} href="/likes">likes</a>
-            <a class:list={["nav-link", { active: currentPath === "/about" || currentPath === "/about/" }]} href="/about">about</a>
           </div>
           <div class="nav-right">
             <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
@@ -56,7 +55,6 @@ const currentPath = Astro.url.pathname;
       <div class="mobile-drawer" id="mobile-drawer">
         <a class:list={["nav-link", { active: currentPath.startsWith("/writing") }]} href="/writing">writing</a>
         <a class:list={["nav-link", { active: currentPath === "/likes" || currentPath === "/likes/" }]} href="/likes">likes</a>
-        <a class:list={["nav-link", { active: currentPath === "/about" || currentPath === "/about/" }]} href="/about">about</a>
       </div>
       <div class="main-content">
         <slot />
