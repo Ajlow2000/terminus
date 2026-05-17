@@ -228,13 +228,15 @@ const likes = [
     next.addEventListener("click", () => { setIndex(index + 1); resetAuto(); });
     dots.forEach((d, i) => d.addEventListener("click", () => { setIndex(i); resetAuto(); }));
 
+    cards.forEach((card) => {
+      card.addEventListener("pointerenter", (e) => {
+        if ((e as PointerEvent).pointerType === "mouse") stopAuto();
+      });
+      card.addEventListener("pointerleave", (e) => {
+        if ((e as PointerEvent).pointerType === "mouse") startAuto();
+      });
+    });
     const carousel = document.getElementById("likes-carousel");
-    carousel?.addEventListener("pointerenter", (e) => {
-      if ((e as PointerEvent).pointerType === "mouse") stopAuto();
-    });
-    carousel?.addEventListener("pointerleave", (e) => {
-      if ((e as PointerEvent).pointerType === "mouse") startAuto();
-    });
     carousel?.addEventListener("focusin", stopAuto);
     carousel?.addEventListener("focusout", startAuto);
 
