@@ -7,10 +7,12 @@ import Layout from "../layouts/Layout.astro";
     <div class="landing-inner">
       <!-- TODO: add headshot image -->
       <!-- <div class="landing-portrait" /> -->
-      <span class="eyebrow landing-eyebrow">Writer &middot; Engineer &middot; Paddler</span>
+      <!-- <span class="eyebrow landing-eyebrow">Writer &middot; Engineer &middot; Paddler</span> -->
       <h1 class="landing-name">Alec Lowry</h1>
       <p class="landing-bio">
-        I'm a software engineer working in cybersecurity and Linux. I write here about <em>programming</em>, <em>whitewater rescue</em>, books I'm chewing on, and whatever else I'm trying to think clearly about.
+      I'm a software engineer working for <a class="plain-link" href="https://www.sram.com/en/sram">SRAM</a> building a cross platform bluetooth library in Rust (Linux, Windows, MacOS).
+      I like whitewater kayaking, backcountry skiing, and riding bikes.
+      I'm also very mid at the board game Go.
       </p>
     </div>
   </div>
@@ -74,6 +76,8 @@ import Layout from "../layouts/Layout.astro";
     max-width: 56ch;
   }
   .landing-bio em { font-style: normal; color: var(--ink); }
+  .landing-bio a.plain-link { color: inherit; }
+  .landing-bio a.plain-link:hover { color: var(--forest); }
 
   @media (max-width: 600px) {
     .landing { padding: 24px; }
