@@ -181,6 +181,8 @@ const likes = [
     let index = 0;
     let timer: number | null = null;
     let progressAnim: Animation | null = null;
+    let cycleStartTs = 0;
+    let pausedRemaining = 0;
     const INTERVAL = 5000;
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -197,64 +199,128 @@ const likes = [
       dots.forEach((d, di) => d.classList.toggle("active", di === index));
     }
 
-    function startProgress() {
-      if (!progressEl || reducedMotion) return;
-      progressAnim?.cancel();
-      progressAnim = progressEl.animate(
-        [{ transform: "scaleX(0)" }, { transform: "scaleX(1)" }],
-        { duration: INTERVAL, easing: "linear", fill: "forwards" },
-      );
-    }
-    function stopProgress() {
-      progressAnim?.cancel();
-      progressAnim = null;
-    }
-
-    function startAuto() {
-      stopAuto();
-      timer = window.setInterval(() => {
+    // Start (or restart from 0) the auto-advance cycle.
+    function startCycle() {
+      if (timer !== null) { clearTimeout(timer); timer = null; }
+      if (progressAnim) { progressAnim.cancel(); progressAnim = null; }
+      pausedRemaining = 0;
+      cycleStartTs = performance.now();
+      if (!reducedMotion && progressEl) {
+        progressAnim = progressEl.animate(
+          [{ transform: "scaleX(0)" }, { transform: "scaleX(1)" }],
+          { duration: INTERVAL, easing: "linear", fill: "forwards" },
+        );
+      }
+      timer = window.setTimeout(() => {
         setIndex(index + 1);
-        startProgress();
+        startCycle();
       }, INTERVAL);
-      startProgress();
     }
-    function stopAuto() {
-      if (timer !== null) { clearInterval(timer); timer = null; }
-      stopProgress();
+
+    // Pause: freeze the timer and animation in place, remembering how much remains.
+    function pauseCycle() {
+      if (timer === null) return;
+      const elapsed = performance.now() - cycleStartTs;
+      pausedRemaining = Math.max(0, INTERVAL - elapsed);
+      clearTimeout(timer);
+      timer = null;
+      progressAnim?.pause();
     }
-    function resetAuto() { startAuto(); }
 
-    prev.addEventListener("click", () => { setIndex(index - 1); resetAuto(); });
-    next.addEventListener("click", () => { setIndex(index + 1); resetAuto(); });
-    dots.forEach((d, i) => d.addEventListener("click", () => { setIndex(i); resetAuto(); }));
+    // Resume from a pause; if nothing was paused, start fresh.
+    function resumeCycle() {
+      if (timer !== null) return;
+      if (pausedRemaining <= 0) { startCycle(); return; }
+      cycleStartTs = performance.now() - (INTERVAL - pausedRemaining);
+      timer = window.setTimeout(() => {
+        setIndex(index + 1);
+        startCycle();
+      }, pausedRemaining);
+      pausedRemaining = 0;
+      progressAnim?.play();
+    }
 
+    prev.addEventListener("click", () => { setIndex(index - 1); startCycle(); });
+    next.addEventListener("click", () => { setIndex(index + 1); startCycle(); });
+    dots.forEach((d, i) => d.addEventListener("click", () => { setIndex(i); startCycle(); }));
+
+    let hoveringCard = false;
     cards.forEach((card) => {
       card.addEventListener("pointerenter", (e) => {
-        if ((e as PointerEvent).pointerType === "mouse") stopAuto();
+        if ((e as PointerEvent).pointerType !== "mouse") return;
+        hoveringCard = true;
+        pauseCycle();
       });
       card.addEventListener("pointerleave", (e) => {
-        if ((e as PointerEvent).pointerType === "mouse") startAuto();
+        if ((e as PointerEvent).pointerType !== "mouse") return;
+        hoveringCard = false;
+        resumeCycle();
       });
     });
     const carousel = document.getElementById("likes-carousel");
-    carousel?.addEventListener("focusin", stopAuto);
-    carousel?.addEventListener("focusout", startAuto);
+    carousel?.addEventListener("focusin", pauseCycle);
+    // Don't resume on focusout if the user is still hovering a card —
+    // a click on the card blurs whatever button was focused, which would
+    // otherwise unfreeze the bar despite the hover still being active.
+    carousel?.addEventListener("focusout", () => {
+      if (hoveringCard) return;
+      resumeCycle();
+    });
 
-    // Reset the auto-advance timer when the user's interaction ends
-    // (finger lifts off, mouse drag releases, wheel tick). Programmatic
-    // scrollTo from our own code does NOT fire these, so it's safe.
-    const onUserInteract = () => resetAuto();
-    track.addEventListener("pointerup", onUserInteract);
-    track.addEventListener("pointercancel", onUserInteract);
-    track.addEventListener("touchend", onUserInteract, { passive: true });
-    track.addEventListener("touchcancel", onUserInteract, { passive: true });
-    track.addEventListener("wheel", onUserInteract, { passive: true });
+    // Touch on the track: pause on touch, then on release wait for scroll-snap
+    // to settle (~250ms) and decide — same card → resume; different card → reset.
+    let pausedByTouch = false;
+    let touchSettleTimer: number | null = null;
 
-    // Keep dots in sync if the user scrolls manually (touch / trackpad)
+    function decideAfterTouch() {
+      touchSettleTimer = null;
+      if (!pausedByTouch) return;
+      pausedByTouch = false;
+      const center = track.scrollLeft + track.clientWidth / 2;
+      let closest = 0;
+      let best = Infinity;
+      cards.forEach((c, i) => {
+        const mid = c.offsetLeft + c.clientWidth / 2;
+        const dist = Math.abs(center - mid);
+        if (dist < best) { best = dist; closest = i; }
+      });
+      if (closest !== index) {
+        index = closest;
+        dots.forEach((d, di) => d.classList.toggle("active", di === index));
+        startCycle();
+      } else {
+        resumeCycle();
+      }
+    }
+
+    const onTouchPause = (e: Event) => {
+      if ("pointerType" in e && (e as PointerEvent).pointerType === "mouse") return;
+      if (touchSettleTimer !== null) { clearTimeout(touchSettleTimer); touchSettleTimer = null; }
+      pausedByTouch = true;
+      pauseCycle();
+    };
+    const onTouchRelease = (e: Event) => {
+      if ("pointerType" in e && (e as PointerEvent).pointerType === "mouse") return;
+      if (!pausedByTouch) return;
+      if (touchSettleTimer !== null) clearTimeout(touchSettleTimer);
+      touchSettleTimer = window.setTimeout(decideAfterTouch, 250);
+    };
+
+    track.addEventListener("pointerdown", onTouchPause);
+    track.addEventListener("touchstart", onTouchPause, { passive: true });
+    track.addEventListener("pointerup", onTouchRelease);
+    track.addEventListener("pointercancel", onTouchRelease);
+    track.addEventListener("touchend", onTouchRelease, { passive: true });
+    track.addEventListener("touchcancel", onTouchRelease, { passive: true });
+    track.addEventListener("wheel", () => startCycle(), { passive: true });
+
+    // Keep dots in sync if the user scrolls manually (non-touch paths only —
+    // touch flow goes through decideAfterTouch).
     let scrollDebounce: number | null = null;
     track.addEventListener("scroll", () => {
       if (scrollDebounce !== null) window.clearTimeout(scrollDebounce);
       scrollDebounce = window.setTimeout(() => {
+        if (pausedByTouch) return;
         const center = track.scrollLeft + track.clientWidth / 2;
         let closest = 0;
         let best = Infinity;
@@ -272,6 +338,6 @@ const likes = [
 
     // Init
     setIndex(0);
-    if (!reducedMotion) startAuto();
+    if (!reducedMotion) startCycle();
   }
 </script>
