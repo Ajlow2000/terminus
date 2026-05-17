@@ -309,7 +309,9 @@ const likes = [
     track.addEventListener("pointerdown", onTouchPause);
     track.addEventListener("touchstart", onTouchPause, { passive: true });
     track.addEventListener("pointerup", onTouchRelease);
-    track.addEventListener("pointercancel", onTouchRelease);
+    // NOTE: don't treat pointercancel as a release — mobile browsers fire it
+    // shortly after pointerdown when they take over for native scrolling, well
+    // before the finger actually lifts. Use touchend/touchcancel instead.
     track.addEventListener("touchend", onTouchRelease, { passive: true });
     track.addEventListener("touchcancel", onTouchRelease, { passive: true });
     track.addEventListener("wheel", () => startCycle(), { passive: true });
