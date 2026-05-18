@@ -53,55 +53,63 @@ export const syntaxThemeLight: ThemeRegistrationRaw = {
   ],
 };
 
-// Dark theme — forest code blocks
+// Dark theme — lackluster (slugbyte/lackluster.nvim)
 export const syntaxThemeDark: ThemeRegistrationRaw = {
   name: "terminus-dark",
   type: "dark",
   colors: {
-    "editor.background": "#2F3D2B",
-    "editor.foreground": "#CDD6C7",
-    "editorLineNumber.foreground": "#526648",
+    "editor.background": "#101010",
+    "editor.foreground": "#DDDDDD",
+    "editorLineNumber.foreground": "#444444",
   },
   settings: [
     {
       scope: ["comment", "punctuation.definition.comment"],
-      settings: { foreground: "#7A8971", fontStyle: "italic" },
+      settings: { foreground: "#3A3A3A" },
     },
     {
       scope: ["string", "string.quoted", "string.template"],
-      settings: { foreground: "#8BD99E" },
+      settings: { foreground: "#708090" },
+    },
+    {
+      scope: ["constant.character.escape", "constant.character.escape.regexp"],
+      settings: { foreground: "#789978" },
     },
     {
       scope: ["keyword", "storage.type", "storage.modifier"],
-      settings: { foreground: "#B898E8", fontStyle: "bold" },
+      settings: { foreground: "#666666" },
     },
     {
-      scope: ["entity.name.function", "support.function", "meta.function-call"],
-      settings: { foreground: "#D9A87A" },
+      scope: ["entity.name.function"],
+      settings: { foreground: "#DEEEED" },
+    },
+    {
+      scope: ["support.function", "meta.function-call", "variable.function"],
+      settings: { foreground: "#7A7A7A" },
     },
     {
       scope: ["entity.name.type", "entity.name.class", "support.type", "support.class"],
-      settings: { foreground: "#8FC5D0" },
+      settings: { foreground: "#AAAAAA" },
     },
     {
       scope: ["constant.numeric", "constant.language", "constant.character"],
-      settings: { foreground: "#CFAA6A" },
+      settings: { foreground: "#AAAAAA" },
     },
     {
       scope: ["entity.name.tag", "meta.tag"],
-      settings: { foreground: "#B898E8" },
+      settings: { foreground: "#555555" },
     },
     {
       scope: ["entity.other.attribute-name"],
-      settings: { foreground: "#D9A87A" },
+      settings: { foreground: "#444444" },
     },
     {
       scope: ["variable", "variable.other"],
-      settings: { foreground: "#CDD6C7" },
+      settings: { foreground: "#CCCCCC" },
     },
     {
       scope: ["punctuation"],
-      settings: { foreground: "#8a9e82" },
+      settings: { foreground: "#7A7A7A" },
     },
   ],
 };

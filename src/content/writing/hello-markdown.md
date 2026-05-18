@@ -16,6 +16,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor i
 ## A code block
 
 ```rust filename="example.rs"
+// Build a greeting and print it.
 fn greet(name: &str) -> String {
     format!("Hello, {name}!")
 }

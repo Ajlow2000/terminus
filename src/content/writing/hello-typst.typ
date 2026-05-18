@@ -35,6 +35,7 @@ syntax, faster compilation, and first-class support for mathematical notation.
 == A code block
 
 #with-filename("example.rs")[```rust
+// Build a greeting and print it.
 fn greet(name: &str) -> String {
     format!("Hello, {name}!")
 }
