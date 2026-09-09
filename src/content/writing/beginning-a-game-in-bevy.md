@@ -1,5 +1,5 @@
 ---
-title: Beginning a Game in Bevy
+title: Beginning a Game(?) in Bevy
 date: 2026-09-08
 description: How a failed interview turned into a passion project
 draft: true
@@ -120,14 +120,8 @@ _tada_:
   <source src="/assets/fleetsim-movement-v0.mp4" type="video/mp4" />
 </video>
 
-Then I got a bit excited and started adding some acceleration into the mix (and did it wrong).
-When I loaded this up in my test client my implementation worked when I ordered a unit to move from `posA` -> `posB`.
-But if I ordered it from `posA` -> `posB`, and then ordered it to `posC` before it arrived at `posB`, the unit would start orbiting around `posC` and never come to a rest.
-
-// TODO - add video of the orbiting behavior
-
-Now, this is a pretty basic bug that is easy to reason about and write a test for (literally the first feature implemented lol), but it's a good dress rehearsal for the record/replay/generate test loop.
-It's not hard to imagine that behavior like this only emerges after issuing complex instructions to a fleet of ships and observing some weird pathing.
+Now, this is a pretty simple feature that would have been easy to reason about potential bugs and write tests manually for, but let's pretend it was more complex and we didn't want to write the test by hand.
+Using my gen-test tooling I can create the following test:
 
 ```rust
  #![allow(clippy::unwrap_used, clippy::expect_used)]
@@ -179,6 +173,5 @@ It's not hard to imagine that behavior like this only emerges after issuing comp
  }
 ```
 
-So, now that we wrote a test to capture this behavior and fixed the scuffed implementation-- I think it's high time to start thinking about overhauling the entire movement system and do a "for real" implementation.
-
-To be continued...
+It will be interesting to see how valuable this is as the project evolves and grows in complexity.
+For the time being-- I think it's pretty cool though.
