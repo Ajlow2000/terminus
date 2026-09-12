@@ -20,6 +20,16 @@ const name = Astro.props.name ?? src.split('/').at(-2) ?? 'wasm';
   <slot />
 </div>
 
+<script>
+  // Reload the page when the theme changes so Bevy re-reads the CSS vars.
+  // This script is only present when a wasm-embed is in the tree, so the
+  // reload is scoped to pages that actually have a WASM app.
+  new MutationObserver(() => window.location.reload()).observe(
+    document.documentElement,
+    { attributes: true, attributeFilter: ['data-theme'] },
+  );
+</script>
+
 <script define:vars={{ src, name }}>
   (async () => {
     const container = document.getElementById(`wasm-embed-${name}`);
@@ -96,5 +106,42 @@ const name = Astro.props.name ?? src.split('/').at(-2) ?? 'wasm';
     font-family: var(--f-ui);
     font-size: 13px;
     color: var(--ink-4);
+  }
+</style>
+
+<!--
+  Fleetsim theme — must live on :root because the WASM app calls
+  window.getComputedStyle(document.documentElement) at startup and only
+  accepts #rrggbb hex strings (var() and oklch() are silently ignored).
+
+  Values are hex-converted from the site's oklch design tokens so they
+  stay visually in-sync with the site palette in both modes.
+
+  Caveat: Bevy reads the theme once at startup, so toggling light/dark
+  after the canvas is running requires a page reload to take effect.
+-->
+<style is:global>
+  /* Dark theme (site default) — derived from --bg/--ink/--forest tokens */
+  :root {
+    --fleetsim-bg:            #18221a;
+    --fleetsim-panel:         #202d22;
+    --fleetsim-surface:       #28372b;
+    --fleetsim-text:          #f0f8f1;
+    --fleetsim-text-muted:    #9ba99d;
+    --fleetsim-unit:          #82cb92;
+    --fleetsim-unit-selected: #a8ebb5;
+    --fleetsim-obstacle:      #79371e;
+  }
+
+  /* Light theme (papyrus) — derived from --bg/--ink/--forest light values */
+  [data-theme="light"] {
+    --fleetsim-bg:            #f6f0df;
+    --fleetsim-panel:         #ede5cf;
+    --fleetsim-surface:       #e3d9bd;
+    --fleetsim-text:          #1f1a12;
+    --fleetsim-text-muted:    #7e745b;
+    --fleetsim-unit:          #295935;
+    --fleetsim-unit-selected: #008a39;
+    --fleetsim-obstacle:      #95402b;
   }
 </style>
