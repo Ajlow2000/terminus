@@ -6,17 +6,16 @@ interface Props {
   date: Date;
   tags?: string[];
   seriesName?: string;
-  seriesSlug?: string;
   currentPart?: number;
 }
 
-const { title, date, tags, seriesName, seriesSlug, currentPart } = Astro.props;
+const { title, date, tags, seriesName, currentPart } = Astro.props;
 const formatted = formatDate(date, "long");
 ---
 
 <header>
-  {seriesName && seriesSlug ? (
-    <a class="eyebrow eyebrow-link" href={`/writing/series/${seriesSlug}`}>
+  {seriesName ? (
+    <a class="eyebrow eyebrow-link" href={`/writing?series=${encodeURIComponent(seriesName)}`}>
       {seriesName} &middot; part {currentPart}
     </a>
   ) : (

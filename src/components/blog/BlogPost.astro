@@ -3,7 +3,7 @@ import BaseLayout from "../BaseLayout.astro";
 import TableOfContents from "./TableOfContents.astro";
 import PostHeader from "./PostHeader.astro";
 import CodeBlock from "./CodeBlock.astro";
-import { toSlug, postSlug } from "../../utils/format";
+import { postSlug } from "../../utils/format";
 import { getCollection } from "astro:content";
 
 interface Props {
@@ -18,7 +18,6 @@ const { title, date, description, post, headings = [] } = Astro.props;
 
 const seriesName = post?.data?.series?.name;
 const currentPart = post?.data?.series?.part;
-const seriesSlug = seriesName ? toSlug(seriesName) : undefined;
 
 // Get series prev/next
 let prevPostSlug: string | undefined;
@@ -44,7 +43,6 @@ const hasToc = headings.some((h) => h.depth === 2 || h.depth === 3);
       <TableOfContents
         headings={headings}
         seriesName={seriesName}
-        seriesSlug={seriesSlug}
         currentPart={currentPart}
         seriesTotal={seriesTotal}
         prevPostSlug={prevPostSlug}
@@ -58,7 +56,6 @@ const hasToc = headings.some((h) => h.depth === 2 || h.depth === 3);
         date={date}
         tags={post?.data?.tags}
         seriesName={seriesName}
-        seriesSlug={seriesSlug}
         currentPart={currentPart}
       />
       <div class="post-body">

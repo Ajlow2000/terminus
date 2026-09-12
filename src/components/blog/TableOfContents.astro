@@ -2,14 +2,13 @@
 interface Props {
   headings: { depth: number; slug: string; text: string }[];
   seriesName?: string;
-  seriesSlug?: string;
   currentPart?: number;
   seriesTotal?: number;
   prevPostSlug?: string;
   nextPostSlug?: string;
 }
 
-const { headings, seriesName, seriesSlug, currentPart, seriesTotal, prevPostSlug, nextPostSlug } = Astro.props;
+const { headings, seriesName, currentPart, seriesTotal, prevPostSlug, nextPostSlug } = Astro.props;
 
 const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 ---
@@ -23,10 +22,10 @@ const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
       </li>
     ))}
   </ul>
-  {seriesName && seriesSlug && (
+  {seriesName && (
     <div class="series-nav">
       <span class="label">Series</span>
-      <a class="name" href={`/writing/series/${seriesSlug}`}>{seriesName}</a>
+      <a class="name" href={`/writing?series=${encodeURIComponent(seriesName)}`}>{seriesName}</a>
       <span class="progress">part {currentPart} of {seriesTotal}</span>
       <div class="links">
         {prevPostSlug ? (
