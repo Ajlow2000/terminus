@@ -65,17 +65,50 @@ export function resolveTitle(post: {
   return slugToTitle(slug);
 }
 
-function getGitDate(postId: string): Date {
+/** Returns the date of the oldest commit in which the file had draft=false
+ *  (i.e. the publication date). Uses -S pickaxe so only commits that actually
+ *  changed the "draft: false" string are fetched, then confirms via git-show
+ *  to handle the edge case where the change was a removal not an addition.
+ *  Falls back to mtime if git is unavailable or the post was never published. */
+function getPublishDate(postId: string): Date {
   const filePath = join(process.cwd(), "src", "content", "writing", postId);
+  // Path relative to the repo root, as required by `git show <hash>:<path>`.
+  const repoPath = join("src", "content", "writing", postId);
+
   try {
-    const result = execSync(
-      `git log --follow -1 --format="%cI" -- "${filePath}"`,
+    // Oldest-first list of commits that added or removed "draft: false".
+    // For most posts this is a single commit — the publish commit.
+    const log = execSync(
+      `git log --follow --reverse --format="%H %cI" -S "draft: false" -- "${filePath}"`,
       { encoding: "utf-8", stdio: ["pipe", "pipe", "pipe"] }
     ).trim();
-    if (result) return new Date(result);
+
+    if (!log) throw new Error("no publish commits found");
+
+    for (const line of log.split("\n").filter(Boolean)) {
+      const space = line.indexOf(" ");
+      const hash = line.slice(0, space);
+      const isoDate = line.slice(space + 1);
+
+      // Confirm the snapshot at this commit actually has draft: false
+      // (vs. a removal commit where the pickaxe fires in reverse).
+      const content = execSync(
+        `git show "${hash}:${repoPath}"`,
+        { encoding: "utf-8", stdio: ["pipe", "pipe", "pipe"] }
+      );
+
+      const fmMatch = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+      if (!fmMatch) continue;
+
+      const draftLine = fmMatch[1].match(/^draft:\s*(.+)$/m);
+      const isDraft = draftLine ? draftLine[1].trim().toLowerCase() === "true" : false;
+
+      if (!isDraft) return new Date(isoDate);
+    }
   } catch {
-    // git unavailable — fall through
+    // git unavailable, no commits, or draft was never set to false
   }
+
   try {
     return statSync(filePath).mtime;
   } catch {
@@ -84,11 +117,13 @@ function getGitDate(postId: string): Date {
   }
 }
 
-/** Returns the post date: explicit frontmatter wins, otherwise derived from
- *  the most recent git commit touching the file (falls back to mtime). */
+/** Returns the post date: explicit frontmatter wins, otherwise the date of
+ *  the first commit in which the post had draft=false (the publication date).
+ *  Typo fixes and other edits made after publication do not affect this date.
+ *  Falls back to mtime if git is unavailable. */
 export function resolveDate(post: {
   id: string;
   data: { date?: Date };
 }): Date {
-  return post.data.date ?? getGitDate(post.id);
+  return post.data.date ?? getPublishDate(post.id);
 }
