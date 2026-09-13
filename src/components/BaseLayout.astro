@@ -2,6 +2,7 @@
 import { getEntry } from "astro:content";
 import Nav from "./nav/Nav.astro";
 import Footer from "./Footer.astro";
+import ColorScheme from "./ColorScheme.astro";
 
 interface Props {
   title: string;
@@ -56,50 +57,15 @@ const copyright = siteEntry?.data.copyright ?? `© ${new Date().getFullYear()} A
   </body>
 </html>
 
-<style is:global>
-  /* Theme: Dark (default) */
-  :root {
-    --bg: oklch(0.24 0.022 150);
-    --bg-2: oklch(0.28 0.026 150);
-    --bg-3: oklch(0.32 0.030 150);
-    --line: oklch(0.38 0.032 150);
-    --line-2: oklch(0.34 0.028 150);
-    --ink: oklch(0.97 0.012 150);
-    --ink-2: oklch(0.86 0.018 150);
-    --ink-3: oklch(0.72 0.022 150);
-    --ink-4: oklch(0.56 0.026 150);
-    --forest: oklch(0.78 0.11 150);
-    --forest-2: oklch(0.78 0.11 150 / 0.20);
-    --forest-3: oklch(0.78 0.11 150 / 0.10);
-    --forest-strong: oklch(0.88 0.10 150);
-    --code-bg: oklch(0.28 0.026 150);
-    --code-line: oklch(0.36 0.030 150);
-    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 4px 16px rgba(0,0,0,0.25);
+<ColorScheme />
 
+<style is:global>
+  :root {
+    /* Typography — not scheme-specific */
     --f-display: "Newsreader", Georgia, serif;
     --f-body: "Newsreader", Georgia, serif;
     --f-ui: "Inter", system-ui, -apple-system, sans-serif;
     --f-mono: "JetBrains Mono", ui-monospace, monospace;
-  }
-
-  /* Theme: Light */
-  [data-theme="light"] {
-    --bg: #f6f0df;
-    --bg-2: #ede5cf;
-    --bg-3: #e3d9bd;
-    --line: #d2c6a3;
-    --line-2: #e0d6b8;
-    --ink: #1f1a12;
-    --ink-2: #524a37;
-    --ink-3: #7e745b;
-    --ink-4: #a89e80;
-    --forest: oklch(0.42 0.08 150);
-    --forest-2: oklch(0.42 0.08 150 / 0.12);
-    --forest-3: oklch(0.42 0.08 150 / 0.05);
-    --forest-strong: oklch(0.36 0.09 150);
-    --code-bg: #ece2c5;
-    --code-line: #d8cca8;
-    --shadow: 0 1px 2px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04);
   }
 
   *, *::before, *::after { box-sizing: border-box; }

@@ -1,0 +1,24 @@
+{
+  "plugins": ["./stylelint-semantic-colors.js"],
+  "rules": {
+    "site/semantic-color-tokens": [true, {
+      "allowVars": [
+        "--shiki-dark", "--shiki-dark-bg",
+        "--shiki-light", "--shiki-light-bg"
+      ]
+    }],
+    "color-named": "never"
+  },
+  "overrides": [
+    {
+      "files": ["**/*.astro"],
+      "customSyntax": "postcss-html"
+    }
+  ],
+  "ignoreFiles": [
+    "src/styles/themes.ts",
+    "dist/**",
+    ".astro/**",
+    "node_modules/**"
+  ]
+}

@@ -1,0 +1,26 @@
+---
+/**
+ * Injects the site's color scheme as CSS custom properties on :root (dark,
+ * the default) and [data-theme="light"]. Components reference the semantic
+ * token names (--bg, --ink, --forest …) — they never see these raw values.
+ *
+ * To change the palette, edit src/styles/themes.ts.
+ * To add a third theme, add a new ColorScheme export there and a new selector
+ * block in the `css` template below.
+ */
+import { dark, light, cssVarMap, type ColorScheme } from '../styles/themes';
+
+function renderScheme(scheme: ColorScheme, selector: string): string {
+  const vars = (Object.keys(cssVarMap) as (keyof ColorScheme)[])
+    .map((k) => `  ${cssVarMap[k]}: ${scheme[k]};`)
+    .join('\n');
+  return `${selector} {\n${vars}\n}`;
+}
+
+const css = [
+  renderScheme(dark, ':root'),
+  renderScheme(light, '[data-theme="light"]'),
+].join('\n\n');
+---
+
+<Fragment set:html={`<style>${css}</style>`} />

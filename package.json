@@ -4,12 +4,17 @@
   "version": "0.1.0",
   "scripts": {
     "dev": "astro dev",
+    "predev": "node --import tsx/esm node_modules/stylelint/bin/stylelint.mjs \"src/**/*.{astro,css}\"",
     "build": "astro build",
     "prebuild": "rm -rf .astro",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "lint:css": "node --import tsx/esm node_modules/stylelint/bin/stylelint.mjs \"src/**/*.{astro,css}\""
   },
   "devDependencies": {
-    "@types/node": "^22.0.0"
+    "@types/node": "^22.0.0",
+    "postcss-html": "^2.0.0",
+    "stylelint": "^16.0.0",
+    "tsx": "^4.0.0"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.14",

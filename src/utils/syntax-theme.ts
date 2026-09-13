@@ -1,18 +1,19 @@
 import type { ThemeRegistrationRaw } from "shiki";
+import { light, dark } from "../styles/themes";
 
 // Light theme — warm papyrus code blocks
 export const syntaxThemeLight: ThemeRegistrationRaw = {
   name: "terminus-light",
   type: "light",
   colors: {
-    "editor.background": "#ece2c5",
-    "editor.foreground": "#524a37",
-    "editorLineNumber.foreground": "#a89e80",
+    "editor.background": light.codeBg,
+    "editor.foreground": light.codeFg,
+    "editorLineNumber.foreground": light.codeLineNum,
   },
   settings: [
     {
       scope: ["comment", "punctuation.definition.comment"],
-      settings: { foreground: "#7e745b", fontStyle: "italic" },
+      settings: { foreground: light.codeComment, fontStyle: "italic" },
     },
     {
       scope: ["string", "string.quoted", "string.template"],
@@ -44,11 +45,11 @@ export const syntaxThemeLight: ThemeRegistrationRaw = {
     },
     {
       scope: ["variable", "variable.other"],
-      settings: { foreground: "#524a37" },
+      settings: { foreground: light.codeFg },
     },
     {
       scope: ["punctuation"],
-      settings: { foreground: "#7e745b" },
+      settings: { foreground: light.codeComment },
     },
   ],
 };
@@ -58,14 +59,14 @@ export const syntaxThemeDark: ThemeRegistrationRaw = {
   name: "terminus-dark",
   type: "dark",
   colors: {
-    "editor.background": "#101010",
-    "editor.foreground": "#DDDDDD",
-    "editorLineNumber.foreground": "#444444",
+    "editor.background": "#101010", // intentionally darker than dark.codeBg (lackluster palette)
+    "editor.foreground": dark.codeFg,
+    "editorLineNumber.foreground": dark.codeLineNum,
   },
   settings: [
     {
       scope: ["comment", "punctuation.definition.comment"],
-      settings: { foreground: "#3A3A3A" },
+      settings: { foreground: dark.codeComment },
     },
     {
       scope: ["string", "string.quoted", "string.template"],

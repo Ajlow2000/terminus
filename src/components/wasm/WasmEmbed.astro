@@ -1,5 +1,21 @@
 ---
 import WasmLoading from './WasmLoading.astro';
+import { wasmDark, wasmLight, type WasmColorScheme } from '../../styles/themes';
+
+function renderWasmVars(s: WasmColorScheme): string {
+  return [
+    `  --fleetsim-bg:            ${s.bg};`,
+    `  --fleetsim-panel:         ${s.panel};`,
+    `  --fleetsim-surface:       ${s.surface};`,
+    `  --fleetsim-text:          ${s.text};`,
+    `  --fleetsim-text-muted:    ${s.textMuted};`,
+    `  --fleetsim-unit:          ${s.unit};`,
+    `  --fleetsim-unit-selected: ${s.unitSelected};`,
+    `  --fleetsim-obstacle:      ${s.obstacle};`,
+  ].join('\n');
+}
+
+const wasmCss = `:root {\n${renderWasmVars(wasmDark)}\n}\n\n[data-theme="light"] {\n${renderWasmVars(wasmLight)}\n}`;
 
 interface Props {
   // Path or URL to the wasm-bindgen JS glue file.
@@ -110,38 +126,10 @@ const name = Astro.props.name ?? src.split('/').at(-2) ?? 'wasm';
 </style>
 
 <!--
-  Fleetsim theme — must live on :root because the WASM app calls
-  window.getComputedStyle(document.documentElement) at startup and only
-  accepts #rrggbb hex strings (var() and oklch() are silently ignored).
-
-  Values are hex-converted from the site's oklch design tokens so they
-  stay visually in-sync with the site palette in both modes.
-
-  Caveat: Bevy reads the theme once at startup, so toggling light/dark
-  after the canvas is running requires a page reload to take effect.
+  Fleetsim theme — sourced from wasmDark/wasmLight in src/styles/themes.ts.
+  Must live on :root: Bevy reads window.getComputedStyle(document.documentElement)
+  at startup and only accepts #rrggbb hex strings.
+  Toggling light/dark after the canvas is running requires a page reload (handled
+  by the MutationObserver script above).
 -->
-<style is:global>
-  /* Dark theme (site default) — derived from --bg/--ink/--forest tokens */
-  :root {
-    --fleetsim-bg:            #18221a;
-    --fleetsim-panel:         #202d22;
-    --fleetsim-surface:       #28372b;
-    --fleetsim-text:          #f0f8f1;
-    --fleetsim-text-muted:    #9ba99d;
-    --fleetsim-unit:          #82cb92;
-    --fleetsim-unit-selected: #a8ebb5;
-    --fleetsim-obstacle:      #79371e;
-  }
-
-  /* Light theme (papyrus) — derived from --bg/--ink/--forest light values */
-  [data-theme="light"] {
-    --fleetsim-bg:            #f6f0df;
-    --fleetsim-panel:         #ede5cf;
-    --fleetsim-surface:       #e3d9bd;
-    --fleetsim-text:          #1f1a12;
-    --fleetsim-text-muted:    #7e745b;
-    --fleetsim-unit:          #295935;
-    --fleetsim-unit-selected: #008a39;
-    --fleetsim-obstacle:      #95402b;
-  }
-</style>
+<Fragment set:html={`<style>${wasmCss}</style>`} />
